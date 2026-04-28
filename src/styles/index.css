@@ -1,0 +1,25 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #08080e;
+  --s1: #0e0e18;
+  --s2: #14141f;
+  --border: #1f1f30;
+  --gold: #d4a847;
+  --gold2: #f0c96a;
+  --teal: #2dd4bf;
+  --green: #34d399;
+  --red: #f87171;
+  --blue: #60a5fa;
+  --text: #ede8dc;
+  --muted: #4a4860;
+  --muted2: #6b6886;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Mono', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
