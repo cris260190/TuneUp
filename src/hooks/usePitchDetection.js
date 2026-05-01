@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react'
+import { PitchDetector } from 'pitchy'
 
 const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
 
@@ -55,13 +56,17 @@ export function usePitchDetection(refHz) {
 
   const detect = useCallback(() => {
     if (!analyserRef.current) return
-    const buf = new Float32Array(analyserRef.current.fftSize)
+    const bufLength = analyserRef.current.fftSize
+    const buf = new Float32Array(bufLength)
     analyserRef.current.getFloatTimeDomainData(buf)
-    const freq = autoCorrelate(buf, audioCtxRef.current.sampleRate)
-
-    if (freq > 25 && freq < 2500) {
-      const result = freqToNote(freq, refHz)
-      setFrequency(Math.round(freq))
+    
+    const detector = PitchDetector.forFloat32Array(bufLength)
+    const [pitch, clarity] = detector.findPitch(buf, audioCtxRef.current.sampleRate)
+    
+    // clarity e între 0-1, sub 0.85 ignorăm — asta fix zgomotul de fundal
+    if (clarity > 0.85 && pitch > 25 && pitch < 2500) {
+      const result = freqToNote(pitch, refHz)
+      setFrequency(Math.round(pitch))
       setNote(result.name)
       setCents(result.cents)
     } else {
