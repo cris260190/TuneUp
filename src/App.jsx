@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { CATS } from './data/instruments'
 import { usePitchDetection } from './hooks/usePitchDetection'
 import { useMetronome } from './hooks/useMetronome'
@@ -7,8 +7,17 @@ import CategoryNav from './components/CategoryNav'
 import SubNav from './components/SubNav'
 import TunerPanel from './components/TunerPanel'
 import SidePanel from './components/SidePanel'
-
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', handler)
+    return () => window.removeEventListener('resize', handler)
+  }, [])
+  return isMobile
+}
 export default function App() {
+  const isMobile = useIsMobile()
   const [activeCat, setActiveCat] = useState('guitar')
   const [activeSub, setActiveSub] = useState('Standard')
   const [refHz, setRefHz] = useState(440)
@@ -45,7 +54,7 @@ export default function App() {
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 360px',
+        gridTemplateColumns: isMobile ? '1fr' : '1fr 360px',
         minHeight: 'calc(100vh - 160px)'
       }}>
         <TunerPanel
