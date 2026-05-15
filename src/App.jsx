@@ -8,6 +8,7 @@ import CategoryNav from './components/CategoryNav'
 import SubNav from './components/SubNav'
 import TunerPanel from './components/TunerPanel'
 import SidePanel from './components/SidePanel'
+import MetronomePage from './components/MetronomePage'
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
@@ -96,6 +97,7 @@ function TunerPage() {
 export default function App() {
   return (
     <Routes>
+      <Route path="/metronome" element={<MetronomePage />} />
       <Route path="/:category/:sub" element={<TunerPage />} />
       <Route path="/:category" element={<TunerPage />} />
       <Route path="/" element={<TunerPage />} />

@@ -42,6 +42,14 @@ export default function Header({ refHz, onChangeRef }) {
             cursor: 'pointer', fontSize: '.8rem', padding: '0 .2rem'
           }}>+</button>
           Hz
+          <a href="/metronome" style={{
+  padding: '.4rem .9rem',
+  border: '1px solid var(--border)',
+  borderRadius: '20px',
+  fontSize: '.6rem', letterSpacing: '.1em',
+  textTransform: 'uppercase', color: 'var(--muted2)',
+  textDecoration: 'none', background: 'var(--s1)',
+}}>Metronome</a>
         </div>
       </div>
     </header>
