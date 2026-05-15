@@ -1,4 +1,5 @@
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { Routes, Route, useNavigate, useParams } from 'react-router-dom'
 import { CATS } from './data/instruments'
 import { usePitchDetection } from './hooks/usePitchDetection'
 import { useMetronome } from './hooks/useMetronome'
@@ -7,6 +8,7 @@ import CategoryNav from './components/CategoryNav'
 import SubNav from './components/SubNav'
 import TunerPanel from './components/TunerPanel'
 import SidePanel from './components/SidePanel'
+
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
   useEffect(() => {
@@ -16,10 +18,17 @@ function useIsMobile() {
   }, [])
   return isMobile
 }
-export default function App() {
+
+function TunerPage() {
+  const { category = 'guitar', sub } = useParams()
+  const navigate = useNavigate()
   const isMobile = useIsMobile()
-  const [activeCat, setActiveCat] = useState('guitar')
-  const [activeSub, setActiveSub] = useState('Standard')
+
+  const activeCat = CATS[category] ? category : 'guitar'
+  const activeSub = sub && CATS[activeCat]?.subs[sub]
+    ? sub
+    : Object.keys(CATS[activeCat].subs)[0]
+
   const [refHz, setRefHz] = useState(440)
 
   const { isListening, frequency, note, cents, toggleListening, analyser, audioCtx } =
@@ -28,8 +37,8 @@ export default function App() {
   const metronome = useMetronome(audioCtx)
 
   function handleSetCat(key) {
-    setActiveCat(key)
-    setActiveSub(Object.keys(CATS[key].subs)[0])
+    const firstSub = Object.keys(CATS[key].subs)[0]
+    navigate(`/${key}/${firstSub}`)
   }
 
   function handleChangeRef(delta) {
@@ -49,7 +58,7 @@ export default function App() {
       <SubNav
         subs={Object.keys(CATS[activeCat].subs)}
         activeSub={activeSub}
-        onSetSub={setActiveSub}
+        onSetSub={(s) => navigate(`/${activeCat}/${s}`)}
       />
 
       <div style={{
@@ -68,16 +77,28 @@ export default function App() {
           onSelectRef={() => {}}
         />
 
-        <SidePanel
-          analyser={analyser}
-          isListening={isListening}
-          refHz={refHz}
-          onChangeRef={handleChangeRef}
-          note={note}
-          cents={cents}
-          metronome={metronome}
-        />
+        {!isMobile && (
+          <SidePanel
+            analyser={analyser}
+            isListening={isListening}
+            refHz={refHz}
+            onChangeRef={handleChangeRef}
+            note={note}
+            cents={cents}
+            metronome={metronome}
+          />
+        )}
       </div>
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/:category/:sub" element={<TunerPage />} />
+      <Route path="/:category" element={<TunerPage />} />
+      <Route path="/" element={<TunerPage />} />
+    </Routes>
   )
 }
