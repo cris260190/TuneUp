@@ -1,4 +1,8 @@
+import { useNavigate } from 'react-router-dom'
+
 export default function Header({ refHz, onChangeRef }) {
+  const navigate = useNavigate()
+
   return (
     <header style={{
       position: 'relative', zIndex: 10,
@@ -8,7 +12,8 @@ export default function Header({ refHz, onChangeRef }) {
       background: 'rgba(8,8,14,.8)',
       backdropFilter: 'blur(12px)',
     }}>
-      <div>
+      {/* Logo — clickabil */}
+      <div onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
         <div style={{
           fontFamily: "'Cormorant Garamond', serif",
           fontSize: '1.8rem', fontWeight: 600, letterSpacing: '-.01em'
@@ -23,7 +28,9 @@ export default function Header({ refHz, onChangeRef }) {
         </div>
       </div>
 
+      {/* Dreapta */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        {/* Ref Hz */}
         <div style={{
           display: 'flex', alignItems: 'center', gap: '.5rem',
           padding: '.4rem .9rem', border: '1px solid var(--border)',
@@ -42,15 +49,18 @@ export default function Header({ refHz, onChangeRef }) {
             cursor: 'pointer', fontSize: '.8rem', padding: '0 .2rem'
           }}>+</button>
           Hz
-          <a href="/metronome" style={{
-  padding: '.4rem .9rem',
-  border: '1px solid var(--border)',
-  borderRadius: '20px',
-  fontSize: '.6rem', letterSpacing: '.1em',
-  textTransform: 'uppercase', color: 'var(--muted2)',
-  textDecoration: 'none', background: 'var(--s1)',
-}}>Metronome</a>
         </div>
+
+        {/* Link Metronome */}
+        <button onClick={() => navigate('/metronome')} style={{
+          padding: '.4rem .9rem',
+          border: '1px solid var(--border)',
+          borderRadius: '20px',
+          fontSize: '.6rem', letterSpacing: '.1em',
+          textTransform: 'uppercase', color: 'var(--muted2)',
+          textDecoration: 'none', background: 'var(--s1)',
+          cursor: 'pointer',
+        }}>Metronome</button>
       </div>
     </header>
   )

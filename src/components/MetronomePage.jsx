@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useMetronome } from '../hooks/useMetronome'
 
 const SIGS = [2, 3, 4, 5, 6, 7]
@@ -21,7 +22,7 @@ export default function MetronomePage() {
   const audioCtxRef = useRef(null)
   const { isPlaying, bpm, signature, currentBeat, toggle, updateBpm, updateSignature } =
     useMetronome(audioCtxRef)
-
+  const navigate = useNavigate()
   const tempoName = getTempoName(bpm)
 
   return (
@@ -42,29 +43,30 @@ export default function MetronomePage() {
         justifyContent: 'space-between',
       }}>
         <div>
-          <div style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: '1.8rem', fontWeight: 600,
-          }}>
-            Tune<em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>Up</em>
-            <span style={{ color: 'var(--muted2)', fontSize: '1rem', marginLeft: '.75rem' }}>
-              — Metronome
-            </span>
-          </div>
+          <div onClick={() => navigate('/')} style={{
+  fontFamily: "'Cormorant Garamond', serif",
+  fontSize: '1.8rem', fontWeight: 600,
+  cursor: 'pointer',
+}}>
+  Tune<em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>Up</em>
+  <span style={{ color: 'var(--muted2)', fontSize: '1rem', marginLeft: '.75rem' }}>
+    — Metronome
+  </span>
+</div>
           <div style={{
             fontSize: '.55rem', letterSpacing: '.3em',
             textTransform: 'uppercase', color: 'var(--muted2)', marginTop: '.1rem'
           }}>Free Online Metronome</div>
         </div>
-        <a href="/" style={{
-          padding: '.4rem .9rem',
-          border: '1px solid var(--border)',
-          borderRadius: '20px',
-          fontSize: '.6rem', letterSpacing: '.1em',
-          textTransform: 'uppercase', color: 'var(--muted2)',
-          textDecoration: 'none', background: 'var(--s1)',
-          transition: 'all .2s',
-        }}>← Tuner</a>
+        <button onClick={() => navigate('/')} style={{
+  padding: '.4rem .9rem',
+  border: '1px solid var(--border)',
+  borderRadius: '20px',
+  fontSize: '.6rem', letterSpacing: '.1em',
+  textTransform: 'uppercase', color: 'var(--muted2)',
+  textDecoration: 'none', background: 'var(--s1)',
+  cursor: 'pointer',
+}}>← Tuner</button>
       </header>
 
       {/* Main */}
