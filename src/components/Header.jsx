@@ -66,6 +66,16 @@ export default function Header({ refHz, onChangeRef, lang, setLang, t }) {
           cursor: 'pointer',
         }}>{t?.metronome || 'Metronome'}</button>
 
+        <button onClick={() => navigate('/pitch-pipe')} style={{
+  padding: '.4rem .9rem',
+  border: '1px solid var(--border)',
+  borderRadius: '20px',
+  fontSize: '.6rem', letterSpacing: '.1em',
+  textTransform: 'uppercase', color: 'var(--muted2)',
+  background: 'var(--s1)', cursor: 'pointer',
+}}>Pitch Pipe</button>
+        
+
         {/* Language selector */}
         <div style={{ display: 'flex', gap: '.3rem' }}>
           {LANGUAGES.map(l => (
