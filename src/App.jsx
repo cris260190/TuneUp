@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate, useParams } from 'react-router-dom'
 import { CATS } from './data/instruments'
 import { usePitchDetection } from './hooks/usePitchDetection'
 import { useMetronome } from './hooks/useMetronome'
+import { useLanguage } from './hooks/useLanguage'
 import Header from './components/Header'
 import CategoryNav from './components/CategoryNav'
 import SubNav from './components/SubNav'
@@ -24,6 +25,7 @@ function TunerPage() {
   const { category = 'guitar', sub } = useParams()
   const navigate = useNavigate()
   const isMobile = useIsMobile()
+  const { lang, setLang, t } = useLanguage()
 
   const activeCat = CATS[category] ? category : 'guitar'
   const activeSub = sub && CATS[activeCat]?.subs[sub]
@@ -48,7 +50,13 @@ function TunerPage() {
 
   return (
     <div>
-      <Header refHz={refHz} onChangeRef={handleChangeRef} />
+      <Header
+        refHz={refHz}
+        onChangeRef={handleChangeRef}
+        lang={lang}
+        setLang={setLang}
+        t={t}
+      />
 
       <CategoryNav
         cats={CATS}
@@ -76,6 +84,7 @@ function TunerPage() {
           isListening={isListening}
           onToggleListen={toggleListening}
           onSelectRef={() => {}}
+          t={t}
         />
 
         {!isMobile && (
@@ -87,6 +96,7 @@ function TunerPage() {
             note={note}
             cents={cents}
             metronome={metronome}
+            t={t}
           />
         )}
       </div>

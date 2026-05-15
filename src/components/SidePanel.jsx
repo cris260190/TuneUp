@@ -2,13 +2,12 @@ import { useRef, useEffect } from 'react'
 
 export default function SidePanel({ 
   analyser, isListening, refHz, onChangeRef,
-  note, cents, metronome 
+  note, cents, metronome, t
 }) {
   const canvasRef = useRef(null)
   const animRef = useRef(null)
   const historyRef = useRef([])
 
-  // adaugă în history când se detectează o notă nouă
   useEffect(() => {
     if (!note) return
     const last = historyRef.current[0]
@@ -20,7 +19,6 @@ export default function SidePanel({
     }
   }, [note, cents])
 
-  // waveform
   useEffect(() => {
     if (!isListening || !analyser.current) return
     const canvas = canvasRef.current
@@ -66,7 +64,7 @@ export default function SidePanel({
           fontSize: '.55rem', letterSpacing: '.3em',
           textTransform: 'uppercase', color: 'var(--muted)',
           marginBottom: '1rem'
-        }}>Waveform</div>
+        }}>{t?.waveform || 'Waveform'}</div>
         <canvas ref={canvasRef} width={320} height={72} style={{
           width: '100%', height: '72px', display: 'block',
           border: '1px solid var(--border)', borderRadius: '8px',
@@ -80,7 +78,7 @@ export default function SidePanel({
           fontSize: '.55rem', letterSpacing: '.3em',
           textTransform: 'uppercase', color: 'var(--muted)',
           marginBottom: '1rem'
-        }}>Reference Pitch</div>
+        }}>{t?.refPitch || 'Reference Pitch'}</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '.75rem' }}>
           <button onClick={() => onChangeRef(-1)} style={adjBtn}>−</button>
           <div>
@@ -100,9 +98,8 @@ export default function SidePanel({
           fontSize: '.55rem', letterSpacing: '.3em',
           textTransform: 'uppercase', color: 'var(--muted)',
           marginBottom: '1rem'
-        }}>Metronome</div>
+        }}>{t?.metronome || 'Metronome'}</div>
 
-        {/* BPM + dots */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
           <div>
             <div style={{
@@ -111,7 +108,6 @@ export default function SidePanel({
             }}>{bpm}</div>
             <div style={{ fontSize: '.5rem', color: 'var(--muted2)', letterSpacing: '.2em', textTransform: 'uppercase' }}>BPM</div>
           </div>
-          {/* beat dots */}
           <div style={{ display: 'flex', gap: '.4rem' }}>
             {Array.from({ length: signature }, (_, i) => (
               <div key={i} style={{
@@ -128,13 +124,11 @@ export default function SidePanel({
           </div>
         </div>
 
-        {/* Slider BPM */}
         <input type="range" min={40} max={240} value={bpm}
           onChange={e => updateBpm(parseInt(e.target.value))}
           style={{ width: '100%', marginBottom: '1rem', accentColor: 'var(--gold)' }}
         />
 
-        {/* Time signature */}
         <div style={{ display: 'flex', gap: '.4rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
           {SIGS.map(s => (
             <button key={s} onClick={() => updateSignature(s)} style={{
@@ -150,7 +144,6 @@ export default function SidePanel({
           ))}
         </div>
 
-        {/* Start/Stop */}
         <button onClick={toggle} style={{
           width: '100%', padding: '.7rem',
           border: isPlaying ? 'none' : '1px solid var(--border)',
@@ -162,7 +155,9 @@ export default function SidePanel({
           background: isPlaying ? 'var(--teal)' : 'var(--s2)',
           color: isPlaying ? 'var(--bg)' : 'var(--muted2)',
         }}>
-          {isPlaying ? '■ Stop Metronome' : '▶ Start Metronome'}
+          {isPlaying 
+            ? (t?.metStop || '■ Stop Metronome') 
+            : (t?.metStart || '▶ Start Metronome')}
         </button>
       </div>
 
@@ -172,17 +167,21 @@ export default function SidePanel({
           fontSize: '.55rem', letterSpacing: '.3em',
           textTransform: 'uppercase', color: 'var(--muted)',
           marginBottom: '1rem'
-        }}>Detection History</div>
+        }}>{t?.history || 'Detection History'}</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '.35rem' }}>
           {historyRef.current.length === 0 ? (
             <div style={{ color: 'var(--muted)', fontSize: '.6rem', textAlign: 'center', padding: '.5rem' }}>
-              No detections yet
+              {t?.noDetections || 'No detections yet'}
             </div>
           ) : historyRef.current.map((h, i) => {
             const isIn = Math.abs(h.cents) < 5
             const isFlat = h.cents < 0
             const statusColor = isIn ? 'var(--green)' : isFlat ? 'var(--blue)' : 'var(--red)'
-            const statusLabel = isIn ? 'In tune' : isFlat ? `${Math.abs(h.cents)}¢ flat` : `${h.cents}¢ sharp`
+            const statusLabel = isIn 
+              ? (t?.inTuneLabel || 'In tune') 
+              : isFlat 
+                ? `${Math.abs(h.cents)}¢ ${t?.flatLabel || 'flat'}` 
+                : `${h.cents}¢ ${t?.sharpLabel || 'sharp'}`
             return (
               <div key={i} style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',

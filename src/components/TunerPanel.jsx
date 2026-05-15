@@ -1,10 +1,9 @@
 export default function TunerPanel({ 
   instrument, activeSub, frequency, note, cents, 
-  isListening, onToggleListen, onSelectRef 
+  isListening, onToggleListen, onSelectRef, t
 }) {
   const inst = instrument.subs[activeSub]
   
-  // stare tuning pentru culori
   const tuneState = note && Math.abs(cents) < 5 ? 'in-tune' 
     : cents < 0 ? 'flat' : 'sharp'
   
@@ -19,9 +18,9 @@ export default function TunerPanel({
     : tuneState === 'flat' ? 'var(--blue)' : 'var(--red)'
 
   const centsText = !note ? '—'
-    : Math.abs(cents) < 5 ? '✓ In Tune'
-    : cents < 0 ? `♭ ${Math.abs(Math.round(cents))} cents flat`
-    : `♯ ${Math.round(cents)} cents sharp`
+    : Math.abs(cents) < 5 ? (t?.inTune || '✓ In Tune')
+    : cents < 0 ? `♭ ${Math.abs(Math.round(cents))} ${t?.flat || 'cents flat'}`
+    : `♯ ${Math.round(cents)} ${t?.sharp || 'cents sharp'}`
 
   const centsColor = !note ? 'var(--muted2)'
     : tuneState === 'in-tune' ? 'var(--green)'
@@ -65,13 +64,13 @@ export default function TunerPanel({
         textTransform: 'uppercase', color: 'var(--muted2)',
       }}>
         {note ? (
-          <>Detected: <span style={{
+          <>{t?.detected || 'Detected'}: <span style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontSize: '1.4rem', fontWeight: 400,
             color: 'var(--gold)', letterSpacing: 0,
             marginRight: '.3rem'
           }}>{note}</span></>
-        ) : 'Press Listen to start'}
+        ) : (t?.pressListen || 'Press Listen to start')}
       </div>
 
       {/* Meter */}
@@ -82,20 +81,20 @@ export default function TunerPanel({
           textTransform: 'uppercase', color: 'var(--muted)',
           marginBottom: '.6rem'
         }}>
-          <span>♭ Flat</span><span>In Tune</span><span>Sharp ♯</span>
+          <span>♭ {t?.flatLabel || 'Flat'}</span>
+          <span>{t?.inTuneLabel || 'In Tune'}</span>
+          <span>{t?.sharpLabel || 'Sharp'} ♯</span>
         </div>
         <div style={{
           position: 'relative', height: '6px',
           background: 'var(--s2)', borderRadius: '3px',
           marginBottom: '.75rem',
         }}>
-          {/* zona verde centru */}
           <div style={{
             position: 'absolute', top: 0, height: '100%',
             width: '10%', left: '45%',
             background: 'rgba(52,211,153,.15)', borderRadius: '3px'
           }} />
-          {/* ac */}
           <div style={{
             position: 'absolute', top: '-7px',
             width: '3px', height: '20px', borderRadius: '2px',
@@ -121,7 +120,9 @@ export default function TunerPanel({
         textTransform: 'uppercase', color: 'var(--muted)',
         marginBottom: '1rem'
       }}>
-        {inst.type === 'strings' ? 'Reference Strings' : 'Reference Notes'}
+        {inst.type === 'strings' 
+          ? (t?.refStrings || 'Reference Strings') 
+          : (t?.refNotes || 'Reference Notes')}
       </div>
 
       {inst.type === 'strings' ? (
@@ -190,7 +191,9 @@ export default function TunerPanel({
           <line x1="12" y1="19" x2="12" y2="23"/>
           <line x1="8" y1="23" x2="16" y2="23"/>
         </svg>
-        {isListening ? 'Stop Listening' : 'Start Listening'}
+        {isListening 
+          ? (t?.listenStop || 'Stop Listening') 
+          : (t?.listenStart || 'Start Listening')}
       </button>
     </div>
   )
