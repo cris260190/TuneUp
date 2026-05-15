@@ -15,6 +15,15 @@
   --muted: #4a4860;
   --muted2: #6b6886;
 }
+[data-theme="light"] {
+  --bg: #f5f0e8;
+  --s1: #ede8dc;
+  --s2: #e0dbd0;
+  --border: #d0c9b8;
+  --text: #1a1a2e;
+  --muted: #8a8470;
+  --muted2: #6b6455;
+}
 
 body {
   background: var(--bg);

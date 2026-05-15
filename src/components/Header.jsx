@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom'
+import { useTheme } from '../hooks/useTheme'
 
 export default function Header({ refHz, onChangeRef }) {
   const navigate = useNavigate()
+  const { theme, toggleTheme } = useTheme()
 
   return (
     <header style={{
@@ -58,9 +60,22 @@ export default function Header({ refHz, onChangeRef }) {
           borderRadius: '20px',
           fontSize: '.6rem', letterSpacing: '.1em',
           textTransform: 'uppercase', color: 'var(--muted2)',
-          textDecoration: 'none', background: 'var(--s1)',
+          background: 'var(--s1)',
           cursor: 'pointer',
         }}>Metronome</button>
+
+        {/* Dark/Light toggle */}
+        <button onClick={toggleTheme} style={{
+          padding: '.4rem .9rem',
+          border: '1px solid var(--border)',
+          borderRadius: '20px',
+          fontSize: '.8rem',
+          background: 'var(--s1)',
+          cursor: 'pointer',
+          color: 'var(--muted2)',
+        }}>
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
       </div>
     </header>
   )
