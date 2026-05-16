@@ -24,7 +24,7 @@ export default function PitchPipePage() {
   const { theme, toggleTheme } = useTheme()
   const audioCtxRef = useRef(null)
   const oscRef = useRef(null)
-  const [playing, setPlaying] = useState(null) // 'C4', 'A3' etc
+  const [playing, setPlaying] = useState(null)
   const [octave, setOctave] = useState(4)
   const [waveform, setWaveform] = useState('sine')
 
@@ -34,56 +34,25 @@ export default function PitchPipePage() {
     return base * Math.pow(2, diff)
   }
 
- async function playNote(note) {
-  const key = `${note}${octave}`
-
-  if (playing === key) {
-    stopNote()
-    return
-  }
-
-  stopNote()
-
-  if (!audioCtxRef.current) {
-    audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)()
-  }
-  const ctx = audioCtxRef.current
-  if (ctx.state === 'suspended') await ctx.resume()
-
-  const osc = ctx.createOscillator()
-  const gain = ctx.createGain()
-
-  osc.connect(gain)
-  gain.connect(ctx.destination)
-
-  osc.frequency.value = getFreq(note, octave)
-  osc.type = waveform
-  gain.gain.setValueAtTime(0, ctx.currentTime)
-  gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.05)
-
-  osc.start()
-  oscRef.current = { osc, gain }
-  setPlaying(key)
-}
-
+  async function playNote(note) {
+    const key = `${note}${octave}`
+    if (playing === key) { stopNote(); return }
     stopNote()
 
     if (!audioCtxRef.current) {
       audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)()
     }
-
     const ctx = audioCtxRef.current
+    if (ctx.state === 'suspended') await ctx.resume()
+
     const osc = ctx.createOscillator()
     const gain = ctx.createGain()
-
     osc.connect(gain)
     gain.connect(ctx.destination)
-
     osc.frequency.value = getFreq(note, octave)
     osc.type = waveform
     gain.gain.setValueAtTime(0, ctx.currentTime)
     gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.05)
-
     osc.start()
     oscRef.current = { osc, gain }
     setPlaying(key)
@@ -104,7 +73,6 @@ export default function PitchPipePage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
       
-      {/* Header */}
       <header style={{
         padding: '1.5rem 2.5rem',
         borderBottom: '1px solid var(--border)',
@@ -133,14 +101,12 @@ export default function PitchPipePage() {
         </div>
       </header>
 
-      {/* Main */}
       <div style={{
         flex: 1, display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
         padding: '3rem 2rem', gap: '2.5rem'
       }}>
 
-        {/* Octave selector */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <span style={{ fontSize: '.6rem', letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--muted2)' }}>Octave</span>
           {OCTAVES.map(o => (
@@ -155,7 +121,6 @@ export default function PitchPipePage() {
           ))}
         </div>
 
-        {/* Waveform selector */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <span style={{ fontSize: '.6rem', letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--muted2)' }}>Sound</span>
           {['sine', 'triangle', 'square'].map(w => (
@@ -171,29 +136,26 @@ export default function PitchPipePage() {
           ))}
         </div>
 
-        {/* Piano keys */}
         <div style={{ position: 'relative', display: 'flex', height: '200px', gap: '4px' }}>
-          {NOTES.filter(n => !isBlack(n.name)).map((note, i) => {
+          {NOTES.filter(n => !isBlack(n.name)).map((note) => {
             const key = `${note.name}${octave}`
             const isPlaying = playing === key
             return (
-              <div key={note.name} onClick={() => playNote(note.name)}
-                style={{
-                  width: '64px', height: '100%',
-                  background: isPlaying ? 'var(--gold)' : 'var(--text)',
-                  border: `2px solid ${isPlaying ? 'var(--gold)' : 'var(--border)'}`,
-                  borderRadius: '0 0 8px 8px',
-                  cursor: 'pointer', transition: 'all .15s',
-                  display: 'flex', flexDirection: 'column',
-                  alignItems: 'center', justifyContent: 'flex-end',
-                  paddingBottom: '1rem', position: 'relative',
-                  boxShadow: isPlaying ? `0 0 20px var(--gold)` : 'none',
-                }}
-              >
+              <div key={note.name} onClick={() => playNote(note.name)} style={{
+                width: '64px', height: '100%',
+                background: isPlaying ? 'var(--gold)' : 'var(--text)',
+                border: `2px solid ${isPlaying ? 'var(--gold)' : 'var(--border)'}`,
+                borderRadius: '0 0 8px 8px',
+                cursor: 'pointer', transition: 'all .15s',
+                display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'flex-end',
+                paddingBottom: '1rem', position: 'relative',
+                boxShadow: isPlaying ? `0 0 20px var(--gold)` : 'none',
+              }}>
                 <span style={{
                   fontFamily: "'Cormorant Garamond', serif",
                   fontSize: '1.2rem', fontWeight: 600,
-                  color: isPlaying ? 'var(--bg)' : 'var(--bg)',
+                  color: 'var(--bg)',
                 }}>{note.name}</span>
                 <span style={{ fontSize: '.5rem', color: isPlaying ? 'var(--bg)' : 'var(--muted)' }}>
                   {getFreq(note.name, octave).toFixed(1)} Hz
@@ -202,7 +164,6 @@ export default function PitchPipePage() {
             )
           })}
 
-          {/* Black keys overlay */}
           <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '60%', pointerEvents: 'none' }}>
             {[
               { name: 'C#', pos: 1 },
@@ -214,22 +175,19 @@ export default function PitchPipePage() {
               const key = `${name}${octave}`
               const isPlaying = playing === key
               return (
-                <div key={name}
-                  onClick={() => playNote(name)}
-                  style={{
-                    position: 'absolute',
-                    left: `${pos * 68 - 22}px`,
-                    width: '40px', height: '100%',
-                    background: isPlaying ? 'var(--gold)' : '#1a1a2e',
-                    border: `1px solid ${isPlaying ? 'var(--gold)' : 'var(--border)'}`,
-                    borderRadius: '0 0 6px 6px',
-                    cursor: 'pointer', pointerEvents: 'all',
-                    transition: 'all .15s', zIndex: 2,
-                    boxShadow: isPlaying ? `0 0 16px var(--gold)` : 'none',
-                    display: 'flex', alignItems: 'flex-end',
-                    justifyContent: 'center', paddingBottom: '.5rem',
-                  }}
-                >
+                <div key={name} onClick={() => playNote(name)} style={{
+                  position: 'absolute',
+                  left: `${pos * 68 - 22}px`,
+                  width: '40px', height: '100%',
+                  background: isPlaying ? 'var(--gold)' : '#1a1a2e',
+                  border: `1px solid ${isPlaying ? 'var(--gold)' : 'var(--border)'}`,
+                  borderRadius: '0 0 6px 6px',
+                  cursor: 'pointer', pointerEvents: 'all',
+                  transition: 'all .15s', zIndex: 2,
+                  boxShadow: isPlaying ? `0 0 16px var(--gold)` : 'none',
+                  display: 'flex', alignItems: 'flex-end',
+                  justifyContent: 'center', paddingBottom: '.5rem',
+                }}>
                   <span style={{
                     fontFamily: "'Cormorant Garamond', serif",
                     fontSize: '.8rem', color: isPlaying ? 'var(--bg)' : 'var(--muted2)',
@@ -240,7 +198,6 @@ export default function PitchPipePage() {
           </div>
         </div>
 
-        {/* Playing indicator */}
         <div style={{
           fontSize: '.65rem', letterSpacing: '.2em',
           textTransform: 'uppercase', color: 'var(--muted2)',
@@ -251,7 +208,6 @@ export default function PitchPipePage() {
             : 'Click a note to play'}
         </div>
 
-        {/* Stop button */}
         {playing && (
           <button onClick={stopNote} style={{
             padding: '.6rem 1.5rem',
@@ -262,7 +218,6 @@ export default function PitchPipePage() {
             cursor: 'pointer', transition: 'all .2s',
           }}>■ Stop</button>
         )}
-
       </div>
     </div>
   )
