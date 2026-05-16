@@ -44,6 +44,11 @@ export default function PitchPipePage() {
 
   async function unlockAudio() {
     const ctx = getAudioCtx()
+    const silentBuffer = ctx.createBuffer(1, 1, 22050)
+    const source = ctx.createBufferSource()
+    source.buffer = silentBuffer
+    source.connect(ctx.destination)
+    source.start(0)
     await ctx.resume()
     setUnlocked(true)
   }
@@ -54,7 +59,14 @@ export default function PitchPipePage() {
     stopNote()
 
     const ctx = getAudioCtx()
-    if (ctx.state !== 'running') await ctx.resume()
+    if (ctx.state !== 'running') {
+      const silentBuffer = ctx.createBuffer(1, 1, 22050)
+      const source = ctx.createBufferSource()
+      source.buffer = silentBuffer
+      source.connect(ctx.destination)
+      source.start(0)
+      await ctx.resume()
+    }
 
     const osc = ctx.createOscillator()
     const gain = ctx.createGain()
@@ -118,17 +130,16 @@ export default function PitchPipePage() {
         padding: '3rem 2rem', gap: '2.5rem'
       }}>
 
-        {/* iOS unlock button */}
         {!unlocked && (
           <button onClick={unlockAudio} style={{
             padding: '.75rem 2rem',
-            background: 'var(--s2)',
-            border: '1px solid var(--border)',
-            borderRadius: '8px',
+            background: 'var(--gold)',
+            border: 'none', borderRadius: '8px',
             fontFamily: "'Space Mono', monospace",
             fontSize: '.65rem', letterSpacing: '.15em',
             textTransform: 'uppercase',
-            color: 'var(--muted2)', cursor: 'pointer',
+            color: 'var(--bg)', cursor: 'pointer',
+            fontWeight: 700,
           }}>
             🔊 Tap to enable audio
           </button>
