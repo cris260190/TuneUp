@@ -38,14 +38,14 @@ export function useMetronome() {
     }
   }, [scheduleClick])
 
-  const start = useCallback(async (bpmVal, sig) => {
-    await unlockSharedAudioCtx()
-    const ctx = getSharedAudioCtx()
-    beatRef.current = 0
-    nextNoteRef.current = ctx.currentTime + 0.05
-    setIsPlaying(true)
-    workerRef.current = setInterval(() => schedule(bpmVal, sig), 25)
-  }, [schedule])
+  const start = useCallback((bpmVal, sig) => {
+  // SINCRON - nu async!
+  const ctx = unlockSharedAudioCtx()
+  beatRef.current = 0
+  nextNoteRef.current = ctx.currentTime + 0.1
+  setIsPlaying(true)
+  workerRef.current = setInterval(() => schedule(bpmVal, sig), 25)
+}, [schedule])
 
   const stop = useCallback(() => {
     clearInterval(workerRef.current)
@@ -55,9 +55,8 @@ export function useMetronome() {
   }, [])
 
   const toggle = useCallback(() => {
-    isPlaying ? stop() : start(bpm, signature)
-  }, [isPlaying, stop, start, bpm, signature])
-
+  isPlaying ? stop() : start(bpm, signature)
+}, [isPlaying, stop, start, bpm, signature])
   const updateBpm = useCallback((val) => {
     setBpm(val)
     if (isPlaying) { stop(); start(val, signature) }

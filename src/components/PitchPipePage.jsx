@@ -35,18 +35,19 @@ export default function PitchPipePage() {
     return base * Math.pow(2, diff)
   }
 
-  async function unlockAudio() {
-    await unlockSharedAudioCtx()
+  // SINCRON - nu async!
+  function unlockAudio() {
+    unlockSharedAudioCtx()
     setUnlocked(true)
   }
 
-  async function playNote(note) {
+  // SINCRON - nu async!
+  function playNote(note) {
     const key = `${note}${octave}`
     if (playing === key) { stopNote(); return }
     stopNote()
 
-    await unlockSharedAudioCtx()
-    const ctx = getSharedAudioCtx()
+    const ctx = unlockSharedAudioCtx()
 
     const osc = ctx.createOscillator()
     const gain = ctx.createGain()

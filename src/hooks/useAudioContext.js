@@ -2,31 +2,24 @@ let sharedCtx = null
 
 export function getSharedAudioCtx() {
   if (!sharedCtx) {
-    const Ctx = window.AudioContext || window.webkitAudioContext
-    if (!Ctx) throw new Error('Web Audio API not supported')
-    sharedCtx = new Ctx()
+    sharedCtx = new (window.AudioContext || window.webkitAudioContext)()
   }
   return sharedCtx
 }
 
-export async function unlockSharedAudioCtx() {
+export function unlockSharedAudioCtx() {
+  // creează SINCRON în user gesture
   const ctx = getSharedAudioCtx()
-  try {
-    if (ctx.state === 'suspended') {
-      try {
-        const silentBuffer = ctx.createBuffer(1, 1, ctx.sampleRate || 44100)
-        const src = ctx.createBufferSource()
-        src.buffer = silentBuffer
-        src.connect(ctx.destination)
-        src.start(0)
-      } catch (e) {
-        // ignore buffer/play errors
-      }
-      await ctx.resume()
-    }
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.warn('unlockSharedAudioCtx failed', e)
-  }
+  
+  // silent buffer - must be sync
+  const buf = ctx.createBuffer(1, 1, ctx.sampleRate)
+  const src = ctx.createBufferSource()
+  src.buffer = buf
+  src.connect(ctx.destination)
+  src.start(0)
+
+  // resume e async dar il pornim fara await
+  ctx.resume()
+  
   return ctx
 }
