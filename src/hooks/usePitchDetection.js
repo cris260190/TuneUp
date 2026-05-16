@@ -22,6 +22,7 @@ export function usePitchDetection(refHz) {
   const analyserRef = useRef(null)
   const micStreamRef = useRef(null)
   const loopRef = useRef(null)
+  const audioCtxRef = useRef(null)
 
   const detect = useCallback(() => {
     if (!analyserRef.current) return
@@ -51,6 +52,8 @@ export function usePitchDetection(refHz) {
     try {
       await unlockSharedAudioCtx()
       const ctx = getSharedAudioCtx()
+      audioCtxRef.current = ctx
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
       const source = ctx.createMediaStreamSource(stream)
       const analyser = ctx.createAnalyser()
@@ -80,10 +83,6 @@ export function usePitchDetection(refHz) {
   const toggleListening = useCallback(() => {
     isListening ? stopListening() : startListening()
   }, [isListening, startListening, stopListening])
-
-  // returnăm ref-ul shared pentru SidePanel waveform
-  const audioCtxRef = useRef(null)
-  audioCtxRef.current = getSharedAudioCtx()
 
   return {
     isListening,

@@ -7,12 +7,14 @@ export function useMetronome() {
   const [signature, setSignature] = useState(4)
   const [currentBeat, setCurrentBeat] = useState(-1)
 
+  const audioCtxRef = useRef(null)
   const nextNoteRef = useRef(0)
   const beatRef = useRef(0)
   const workerRef = useRef(null)
 
   const scheduleClick = useCallback((beat, time) => {
-    const ctx = getSharedAudioCtx()
+    const ctx = audioCtxRef.current
+    if (!ctx) return
     const osc = ctx.createOscillator()
     const env = ctx.createGain()
     osc.connect(env)
@@ -26,7 +28,8 @@ export function useMetronome() {
   }, [])
 
   const schedule = useCallback((bpmVal, sig) => {
-    const ctx = getSharedAudioCtx()
+    const ctx = audioCtxRef.current
+    if (!ctx) return
     while (nextNoteRef.current < ctx.currentTime + 0.1) {
       const beat = beatRef.current
       scheduleClick(beat, nextNoteRef.current)
@@ -40,9 +43,9 @@ export function useMetronome() {
 
   const start = useCallback(async (bpmVal, sig) => {
     await unlockSharedAudioCtx()
-    const ctx = getSharedAudioCtx()
+    audioCtxRef.current = getSharedAudioCtx()
     beatRef.current = 0
-    nextNoteRef.current = ctx.currentTime + 0.05
+    nextNoteRef.current = audioCtxRef.current.currentTime + 0.05
     setIsPlaying(true)
     workerRef.current = setInterval(() => schedule(bpmVal, sig), 25)
   }, [schedule])

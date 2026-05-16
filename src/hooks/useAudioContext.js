@@ -1,19 +1,41 @@
-let sharedCtx = null
+import { useState, useRef, useCallback } from 'react'
+import { PitchDetector } from 'pitchy'
+import { getSharedAudioCtx, unlockSharedAudioCtx } from './useAudioContext'
 
-export function getSharedAudioCtx() {
-  if (!sharedCtx) {
-    sharedCtx = new (window.AudioContext || window.webkitAudioContext)()
+// ...existing code...
+
+  const audioCtxRef = useRef(null)
+
+  const startListening = useCallback(async () => {
+    try {
+      await unlockSharedAudioCtx()
+      const ctx = getSharedAudioCtx()
+      audioCtxRef.current = ctx
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const source = ctx.createMediaStreamSource(stream)
+      const analyser = ctx.createAnalyser()
+      analyser.fftSize = 8192
+      source.connect(analyser)
+
+      analyserRef.current = analyser
+      micStreamRef.current = stream
+
+      setIsListening(true)
+      detect()
+    } catch (e) {
+      alert('Microphone access denied.')
+    }
+  }, [detect])
+
+  // ...existing code...
+
+  return {
+    isListening,
+    frequency,
+    note,
+    cents,
+    toggleListening,
+    audioCtx: audioCtxRef,
+    analyser: analyserRef,
   }
-  return sharedCtx
-}
-
-export async function unlockSharedAudioCtx() {
-  const ctx = getSharedAudioCtx()
-  const silentBuffer = ctx.createBuffer(1, 1, 22050)
-  const source = ctx.createBufferSource()
-  source.buffer = silentBuffer
-  source.connect(ctx.destination)
-  source.start(0)
-  await ctx.resume()
-  return ctx
-}
