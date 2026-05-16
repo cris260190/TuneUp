@@ -45,21 +45,26 @@ export function useMetronome(audioCtxRef) {
     }
   }, [audioCtxRef, scheduleClick])
 
-  const start = useCallback((bpmVal, sig) => {
-    // pornește sau creează AudioContext
-    let ctx = audioCtxRef.current
-    if (!ctx) {
-      ctx = new (window.AudioContext || window.webkitAudioContext)()
-      audioCtxRef.current = ctx
-    }
-    if (ctx.state === 'suspended') ctx.resume()
-
+const start = useCallback((bpmVal, sig) => {
+  let ctx = audioCtxRef.current
+  if (!ctx) {
+    ctx = new (window.AudioContext || window.webkitAudioContext)()
+    audioCtxRef.current = ctx
+  }
+  if (ctx.state === 'suspended') {
+    ctx.resume().then(() => {
+      beatRef.current = 0
+      nextNoteRef.current = ctx.currentTime + 0.05
+      setIsPlaying(true)
+      workerRef.current = setInterval(() => schedule(bpmVal, sig), 25)
+    })
+  } else {
     beatRef.current = 0
     nextNoteRef.current = ctx.currentTime + 0.05
     setIsPlaying(true)
-
     workerRef.current = setInterval(() => schedule(bpmVal, sig), 25)
-  }, [audioCtxRef, schedule])
+  }
+}, [audioCtxRef, schedule])
 
   const stop = useCallback(() => {
     clearInterval(workerRef.current)

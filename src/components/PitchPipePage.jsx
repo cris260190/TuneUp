@@ -34,14 +34,37 @@ export default function PitchPipePage() {
     return base * Math.pow(2, diff)
   }
 
-  function playNote(note) {
-    const key = `${note}${octave}`
+ async function playNote(note) {
+  const key = `${note}${octave}`
 
-    // dacă dai click pe aceeași notă, oprește
-    if (playing === key) {
-      stopNote()
-      return
-    }
+  if (playing === key) {
+    stopNote()
+    return
+  }
+
+  stopNote()
+
+  if (!audioCtxRef.current) {
+    audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)()
+  }
+  const ctx = audioCtxRef.current
+  if (ctx.state === 'suspended') await ctx.resume()
+
+  const osc = ctx.createOscillator()
+  const gain = ctx.createGain()
+
+  osc.connect(gain)
+  gain.connect(ctx.destination)
+
+  osc.frequency.value = getFreq(note, octave)
+  osc.type = waveform
+  gain.gain.setValueAtTime(0, ctx.currentTime)
+  gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.05)
+
+  osc.start()
+  oscRef.current = { osc, gain }
+  setPlaying(key)
+}
 
     stopNote()
 
