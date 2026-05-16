@@ -35,10 +35,10 @@ function TunerPage() {
 
   const [refHz, setRefHz] = useState(440)
 
-  const { isListening, frequency, note, cents, toggleListening, analyser, audioCtx } =
+  const { isListening, frequency, note, cents, toggleListening, analyser } =
     usePitchDetection(refHz)
 
-  const metronome = useMetronome(audioCtx)
+  const metronome = useMetronome()
 
   function handleSetCat(key) {
     const firstSub = Object.keys(CATS[key].subs)[0]

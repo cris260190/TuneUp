@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from 'react'
+import { getSharedAudioCtx, unlockSharedAudioCtx } from './useAudioContext'
 
-export function useMetronome(audioCtxRef) {
+export function useMetronome() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [bpm, setBpm] = useState(120)
   const [signature, setSignature] = useState(4)
@@ -11,8 +12,7 @@ export function useMetronome(audioCtxRef) {
   const workerRef = useRef(null)
 
   const scheduleClick = useCallback((beat, time) => {
-    const ctx = audioCtxRef.current
-    if (!ctx) return
+    const ctx = getSharedAudioCtx()
     const osc = ctx.createOscillator()
     const env = ctx.createGain()
     osc.connect(env)
@@ -23,11 +23,10 @@ export function useMetronome(audioCtxRef) {
     env.gain.exponentialRampToValueAtTime(0.001, time + 0.05)
     osc.start(time)
     osc.stop(time + 0.06)
-  }, [audioCtxRef])
+  }, [])
 
   const schedule = useCallback((bpmVal, sig) => {
-    const ctx = audioCtxRef.current
-    if (!ctx) return
+    const ctx = getSharedAudioCtx()
     while (nextNoteRef.current < ctx.currentTime + 0.1) {
       const beat = beatRef.current
       scheduleClick(beat, nextNoteRef.current)
@@ -37,28 +36,16 @@ export function useMetronome(audioCtxRef) {
       beatRef.current = (beat + 1) % sig
       nextNoteRef.current += 60.0 / bpmVal
     }
-  }, [audioCtxRef, scheduleClick])
+  }, [scheduleClick])
 
-  const start = useCallback((bpmVal, sig) => {
-    let ctx = audioCtxRef.current
-    if (!ctx) {
-      ctx = new (window.AudioContext || window.webkitAudioContext)()
-      audioCtxRef.current = ctx
-    }
-
-    const silentBuffer = ctx.createBuffer(1, 1, 22050)
-    const source = ctx.createBufferSource()
-    source.buffer = silentBuffer
-    source.connect(ctx.destination)
-    source.start(0)
-
-    ctx.resume().then(() => {
-      beatRef.current = 0
-      nextNoteRef.current = ctx.currentTime + 0.05
-      setIsPlaying(true)
-      workerRef.current = setInterval(() => schedule(bpmVal, sig), 25)
-    })
-  }, [audioCtxRef, schedule])
+  const start = useCallback(async (bpmVal, sig) => {
+    await unlockSharedAudioCtx()
+    const ctx = getSharedAudioCtx()
+    beatRef.current = 0
+    nextNoteRef.current = ctx.currentTime + 0.05
+    setIsPlaying(true)
+    workerRef.current = setInterval(() => schedule(bpmVal, sig), 25)
+  }, [schedule])
 
   const stop = useCallback(() => {
     clearInterval(workerRef.current)

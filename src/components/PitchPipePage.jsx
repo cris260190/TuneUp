@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
+import { getSharedAudioCtx, unlockSharedAudioCtx } from '../hooks/useAudioContext'
 
 const NOTES = [
   { name: 'C', freq: 261.63 },
@@ -22,7 +23,6 @@ const OCTAVES = [3, 4, 5]
 export default function PitchPipePage() {
   const navigate = useNavigate()
   const { theme, toggleTheme } = useTheme()
-  const audioCtxRef = useRef(null)
   const oscRef = useRef(null)
   const [playing, setPlaying] = useState(null)
   const [octave, setOctave] = useState(4)
@@ -35,21 +35,8 @@ export default function PitchPipePage() {
     return base * Math.pow(2, diff)
   }
 
-  function getAudioCtx() {
-    if (!audioCtxRef.current) {
-      audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)()
-    }
-    return audioCtxRef.current
-  }
-
   async function unlockAudio() {
-    const ctx = getAudioCtx()
-    const silentBuffer = ctx.createBuffer(1, 1, 22050)
-    const source = ctx.createBufferSource()
-    source.buffer = silentBuffer
-    source.connect(ctx.destination)
-    source.start(0)
-    await ctx.resume()
+    await unlockSharedAudioCtx()
     setUnlocked(true)
   }
 
@@ -58,15 +45,8 @@ export default function PitchPipePage() {
     if (playing === key) { stopNote(); return }
     stopNote()
 
-    const ctx = getAudioCtx()
-    if (ctx.state !== 'running') {
-      const silentBuffer = ctx.createBuffer(1, 1, 22050)
-      const source = ctx.createBufferSource()
-      source.buffer = silentBuffer
-      source.connect(ctx.destination)
-      source.start(0)
-      await ctx.resume()
-    }
+    await unlockSharedAudioCtx()
+    const ctx = getSharedAudioCtx()
 
     const osc = ctx.createOscillator()
     const gain = ctx.createGain()
@@ -77,15 +57,15 @@ export default function PitchPipePage() {
     gain.gain.setValueAtTime(0, ctx.currentTime)
     gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.05)
     osc.start()
-    oscRef.current = { osc, gain }
+    oscRef.current = { osc, gain, ctx }
     setPlaying(key)
   }
 
   function stopNote() {
     if (oscRef.current) {
-      const { osc, gain } = oscRef.current
-      gain.gain.linearRampToValueAtTime(0, audioCtxRef.current.currentTime + 0.1)
-      osc.stop(audioCtxRef.current.currentTime + 0.1)
+      const { osc, gain, ctx } = oscRef.current
+      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.1)
+      osc.stop(ctx.currentTime + 0.1)
       oscRef.current = null
     }
     setPlaying(null)

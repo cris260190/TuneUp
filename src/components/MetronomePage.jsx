@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 import { useMetronome } from '../hooks/useMetronome'
@@ -20,21 +20,11 @@ function getTempoName(bpm) {
 }
 
 export default function MetronomePage() {
-  const audioCtxRef = useRef(null)
   const { isPlaying, bpm, signature, currentBeat, toggle, updateBpm, updateSignature } =
-    useMetronome(audioCtxRef)
+    useMetronome()
   const navigate = useNavigate()
   const { theme, toggleTheme } = useTheme()
-  const [unlocked, setUnlocked] = useState(false)
   const tempoName = getTempoName(bpm)
-
-  async function unlockAudio() {
-    if (!audioCtxRef.current) {
-      audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)()
-    }
-    await audioCtxRef.current.resume()
-    setUnlocked(true)
-  }
 
   return (
     <div style={{
@@ -81,23 +71,6 @@ export default function MetronomePage() {
       }}>
         <div style={{ width: '100%', maxWidth: '480px' }}>
 
-          {/* iOS unlock */}
-          {!unlocked && (
-            <button onClick={unlockAudio} style={{
-              width: '100%', padding: '.75rem',
-              background: 'var(--s2)',
-              border: '1px solid var(--border)',
-              borderRadius: '8px', marginBottom: '1.5rem',
-              fontFamily: "'Space Mono', monospace",
-              fontSize: '.65rem', letterSpacing: '.15em',
-              textTransform: 'uppercase',
-              color: 'var(--muted2)', cursor: 'pointer',
-            }}>
-              🔊 Tap to enable audio
-            </button>
-          )}
-
-          {/* BPM display */}
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <div style={{
               fontFamily: "'Cormorant Garamond', serif",
@@ -110,7 +83,6 @@ export default function MetronomePage() {
             }}>BPM — {tempoName}</div>
           </div>
 
-          {/* Beat dots */}
           <div style={{
             display: 'flex', justifyContent: 'center',
             gap: '.75rem', marginBottom: '2.5rem',
@@ -129,7 +101,6 @@ export default function MetronomePage() {
             ))}
           </div>
 
-          {/* Slider */}
           <div style={{ marginBottom: '1.5rem' }}>
             <input
               type="range" min={40} max={240} value={bpm}
@@ -145,7 +116,6 @@ export default function MetronomePage() {
             </div>
           </div>
 
-          {/* BPM buttons */}
           <div style={{
             display: 'flex', justifyContent: 'center',
             gap: '.5rem', marginBottom: '1.5rem',
@@ -163,7 +133,6 @@ export default function MetronomePage() {
             ))}
           </div>
 
-          {/* Time signature */}
           <div style={{
             display: 'flex', justifyContent: 'center',
             gap: '.5rem', marginBottom: '2rem', flexWrap: 'wrap',
@@ -181,7 +150,6 @@ export default function MetronomePage() {
             ))}
           </div>
 
-          {/* Start/Stop */}
           <button onClick={toggle} style={{
             width: '100%', padding: '1rem',
             border: 'none', borderRadius: '10px',
