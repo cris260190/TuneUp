@@ -27,6 +27,7 @@ export default function PitchPipePage() {
   const [playing, setPlaying] = useState(null)
   const [octave, setOctave] = useState(4)
   const [waveform, setWaveform] = useState('sine')
+  const [unlocked, setUnlocked] = useState(false)
 
   function getFreq(note, oct) {
     const base = NOTES.find(n => n.name === note).freq
@@ -34,16 +35,26 @@ export default function PitchPipePage() {
     return base * Math.pow(2, diff)
   }
 
+  function getAudioCtx() {
+    if (!audioCtxRef.current) {
+      audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)()
+    }
+    return audioCtxRef.current
+  }
+
+  async function unlockAudio() {
+    const ctx = getAudioCtx()
+    await ctx.resume()
+    setUnlocked(true)
+  }
+
   async function playNote(note) {
     const key = `${note}${octave}`
     if (playing === key) { stopNote(); return }
     stopNote()
 
-    if (!audioCtxRef.current) {
-      audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)()
-    }
-    const ctx = audioCtxRef.current
-    if (ctx.state === 'suspended') await ctx.resume()
+    const ctx = getAudioCtx()
+    if (ctx.state !== 'running') await ctx.resume()
 
     const osc = ctx.createOscillator()
     const gain = ctx.createGain()
@@ -106,6 +117,22 @@ export default function PitchPipePage() {
         alignItems: 'center', justifyContent: 'center',
         padding: '3rem 2rem', gap: '2.5rem'
       }}>
+
+        {/* iOS unlock button */}
+        {!unlocked && (
+          <button onClick={unlockAudio} style={{
+            padding: '.75rem 2rem',
+            background: 'var(--s2)',
+            border: '1px solid var(--border)',
+            borderRadius: '8px',
+            fontFamily: "'Space Mono', monospace",
+            fontSize: '.65rem', letterSpacing: '.15em',
+            textTransform: 'uppercase',
+            color: 'var(--muted2)', cursor: 'pointer',
+          }}>
+            🔊 Tap to enable audio
+          </button>
+        )}
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <span style={{ fontSize: '.6rem', letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--muted2)' }}>Octave</span>

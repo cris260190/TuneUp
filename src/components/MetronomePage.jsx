@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTheme } from '../hooks/useTheme'
 import { useMetronome } from '../hooks/useMetronome'
 
 const SIGS = [2, 3, 4, 5, 6, 7]
@@ -23,7 +24,17 @@ export default function MetronomePage() {
   const { isPlaying, bpm, signature, currentBeat, toggle, updateBpm, updateSignature } =
     useMetronome(audioCtxRef)
   const navigate = useNavigate()
+  const { theme, toggleTheme } = useTheme()
+  const [unlocked, setUnlocked] = useState(false)
   const tempoName = getTempoName(bpm)
+
+  async function unlockAudio() {
+    if (!audioCtxRef.current) {
+      audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)()
+    }
+    await audioCtxRef.current.resume()
+    setUnlocked(true)
+  }
 
   return (
     <div style={{
@@ -32,7 +43,6 @@ export default function MetronomePage() {
       display: 'flex',
       flexDirection: 'column',
     }}>
-      {/* Header simplu */}
       <header style={{
         padding: '1.5rem 2.5rem',
         borderBottom: '1px solid var(--border)',
@@ -42,40 +52,50 @@ export default function MetronomePage() {
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-        <div>
-          <div onClick={() => navigate('/')} style={{
-  fontFamily: "'Cormorant Garamond', serif",
-  fontSize: '1.8rem', fontWeight: 600,
-  cursor: 'pointer',
-}}>
-  Tune<em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>Up</em>
-  <span style={{ color: 'var(--muted2)', fontSize: '1rem', marginLeft: '.75rem' }}>
-    — Metronome
-  </span>
-</div>
+        <div onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+          <div style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: '1.8rem', fontWeight: 600,
+          }}>
+            Tune<em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>Up</em>
+            <span style={{ color: 'var(--muted2)', fontSize: '1rem', marginLeft: '.75rem' }}>
+              — Metronome
+            </span>
+          </div>
           <div style={{
             fontSize: '.55rem', letterSpacing: '.3em',
             textTransform: 'uppercase', color: 'var(--muted2)', marginTop: '.1rem'
           }}>Free Online Metronome</div>
         </div>
-        <button onClick={() => navigate('/')} style={{
-  padding: '.4rem .9rem',
-  border: '1px solid var(--border)',
-  borderRadius: '20px',
-  fontSize: '.6rem', letterSpacing: '.1em',
-  textTransform: 'uppercase', color: 'var(--muted2)',
-  textDecoration: 'none', background: 'var(--s1)',
-  cursor: 'pointer',
-}}>← Tuner</button>
+        <div style={{ display: 'flex', gap: '.75rem' }}>
+          <button onClick={() => navigate('/pitch-pipe')} style={pillBtn}>Pitch Pipe</button>
+          <button onClick={() => navigate('/')} style={pillBtn}>← Tuner</button>
+          <button onClick={toggleTheme} style={pillBtn}>{theme === 'dark' ? '☀️' : '🌙'}</button>
+        </div>
       </header>
 
-      {/* Main */}
       <div style={{
         flex: 1, display: 'flex',
         alignItems: 'center', justifyContent: 'center',
         padding: '3rem 2rem',
       }}>
         <div style={{ width: '100%', maxWidth: '480px' }}>
+
+          {/* iOS unlock */}
+          {!unlocked && (
+            <button onClick={unlockAudio} style={{
+              width: '100%', padding: '.75rem',
+              background: 'var(--s2)',
+              border: '1px solid var(--border)',
+              borderRadius: '8px', marginBottom: '1.5rem',
+              fontFamily: "'Space Mono', monospace",
+              fontSize: '.65rem', letterSpacing: '.15em',
+              textTransform: 'uppercase',
+              color: 'var(--muted2)', cursor: 'pointer',
+            }}>
+              🔊 Tap to enable audio
+            </button>
+          )}
 
           {/* BPM display */}
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
@@ -179,4 +199,13 @@ export default function MetronomePage() {
       </div>
     </div>
   )
+}
+
+const pillBtn = {
+  padding: '.4rem .9rem',
+  border: '1px solid var(--border)',
+  borderRadius: '20px', fontSize: '.6rem',
+  letterSpacing: '.1em', textTransform: 'uppercase',
+  color: 'var(--muted2)', background: 'var(--s1)',
+  cursor: 'pointer',
 }
