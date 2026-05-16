@@ -227,7 +227,7 @@ export default function PitchPipePage() {
             : 'Click a note to play'}
         </div>
 
-        {playing && (
+{playing && (
           <button onClick={stopNote} style={{
             padding: '.6rem 1.5rem',
             border: '1px solid var(--red)',
@@ -237,6 +237,15 @@ export default function PitchPipePage() {
             cursor: 'pointer', transition: 'all .2s',
           }}>■ Stop</button>
         )}
+
+        {/* iOS warning */}
+        <div style={{
+          fontSize: '.55rem', color: 'var(--muted)',
+          letterSpacing: '.1em', textAlign: 'center',
+        }}>
+          🔕 iPhone: make sure silent mode is off
+        </div>
+
       </div>
     </div>
   )

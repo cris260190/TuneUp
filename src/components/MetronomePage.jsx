@@ -162,6 +162,14 @@ export default function MetronomePage() {
           }}>
             {isPlaying ? '■ Stop' : '▶ Start'}
           </button>
+{/* iOS warning */}
+          <div style={{
+            marginTop: '1rem', textAlign: 'center',
+            fontSize: '.55rem', color: 'var(--muted)',
+            letterSpacing: '.1em',
+          }}>
+            🔕 iPhone: make sure silent mode is off
+          </div>
 
         </div>
       </div>
