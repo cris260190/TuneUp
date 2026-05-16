@@ -30,10 +30,10 @@ export function usePitchDetection(refHz) {
     const bufLength = analyserRef.current.fftSize
     const buf = new Float32Array(bufLength)
     analyserRef.current.getFloatTimeDomainData(buf)
-    
+
     const detector = PitchDetector.forFloat32Array(bufLength)
     const [pitch, clarity] = detector.findPitch(buf, ctx.sampleRate)
-    
+
     if (clarity > 0.85 && pitch > 25 && pitch < 2500) {
       const result = freqToNote(pitch, refHz)
       setFrequency(Math.round(pitch))

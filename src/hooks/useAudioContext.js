@@ -1,41 +1,32 @@
-import { useState, useRef, useCallback } from 'react'
-import { PitchDetector } from 'pitchy'
-import { getSharedAudioCtx, unlockSharedAudioCtx } from './useAudioContext'
+let sharedCtx = null
 
-// ...existing code...
-
-  const audioCtxRef = useRef(null)
-
-  const startListening = useCallback(async () => {
-    try {
-      await unlockSharedAudioCtx()
-      const ctx = getSharedAudioCtx()
-      audioCtxRef.current = ctx
-
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      const source = ctx.createMediaStreamSource(stream)
-      const analyser = ctx.createAnalyser()
-      analyser.fftSize = 8192
-      source.connect(analyser)
-
-      analyserRef.current = analyser
-      micStreamRef.current = stream
-
-      setIsListening(true)
-      detect()
-    } catch (e) {
-      alert('Microphone access denied.')
-    }
-  }, [detect])
-
-  // ...existing code...
-
-  return {
-    isListening,
-    frequency,
-    note,
-    cents,
-    toggleListening,
-    audioCtx: audioCtxRef,
-    analyser: analyserRef,
+export function getSharedAudioCtx() {
+  if (!sharedCtx) {
+    const Ctx = window.AudioContext || window.webkitAudioContext
+    if (!Ctx) throw new Error('Web Audio API not supported')
+    sharedCtx = new Ctx()
   }
+  return sharedCtx
+}
+
+export async function unlockSharedAudioCtx() {
+  const ctx = getSharedAudioCtx()
+  try {
+    if (ctx.state === 'suspended') {
+      try {
+        const silentBuffer = ctx.createBuffer(1, 1, ctx.sampleRate || 44100)
+        const src = ctx.createBufferSource()
+        src.buffer = silentBuffer
+        src.connect(ctx.destination)
+        src.start(0)
+      } catch (e) {
+        // ignore buffer/play errors
+      }
+      await ctx.resume()
+    }
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.warn('unlockSharedAudioCtx failed', e)
+  }
+  return ctx
+}

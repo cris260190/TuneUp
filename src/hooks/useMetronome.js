@@ -42,10 +42,10 @@ export function useMetronome() {
   }, [scheduleClick])
 
   const start = useCallback(async (bpmVal, sig) => {
-    await unlockSharedAudioCtx()
-    audioCtxRef.current = getSharedAudioCtx()
+    const ctx = await unlockSharedAudioCtx()
+    audioCtxRef.current = ctx
     beatRef.current = 0
-    nextNoteRef.current = audioCtxRef.current.currentTime + 0.05
+    nextNoteRef.current = ctx.currentTime + 0.05
     setIsPlaying(true)
     workerRef.current = setInterval(() => schedule(bpmVal, sig), 25)
   }, [schedule])
