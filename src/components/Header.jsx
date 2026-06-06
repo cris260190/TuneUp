@@ -15,7 +15,6 @@ export default function Header({ refHz, onChangeRef, lang, setLang, t }) {
       background: 'rgba(8,8,14,.8)',
       backdropFilter: 'blur(12px)',
     }}>
-      {/* Logo — clickabil */}
       <div onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
         <div style={{
           fontFamily: "'Cormorant Garamond', serif",
@@ -31,10 +30,8 @@ export default function Header({ refHz, onChangeRef, lang, setLang, t }) {
         </div>
       </div>
 
-      {/* Dreapta */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '.75rem', flexWrap: 'wrap' }}>
 
-        {/* Ref Hz */}
         <div style={{
           display: 'flex', alignItems: 'center', gap: '.5rem',
           padding: '.4rem .9rem', border: '1px solid var(--border)',
@@ -55,7 +52,6 @@ export default function Header({ refHz, onChangeRef, lang, setLang, t }) {
           Hz
         </div>
 
-        {/* Link Metronome */}
         <button onClick={() => navigate('/metronome')} style={{
           padding: '.4rem .9rem',
           border: '1px solid var(--border)',
@@ -67,16 +63,14 @@ export default function Header({ refHz, onChangeRef, lang, setLang, t }) {
         }}>{t?.metronome || 'Metronome'}</button>
 
         <button onClick={() => navigate('/pitch-pipe')} style={{
-  padding: '.4rem .9rem',
-  border: '1px solid var(--border)',
-  borderRadius: '20px',
-  fontSize: '.6rem', letterSpacing: '.1em',
-  textTransform: 'uppercase', color: 'var(--muted2)',
-  background: 'var(--s1)', cursor: 'pointer',
-}}>Pitch Pipe</button>
-        
+          padding: '.4rem .9rem',
+          border: '1px solid var(--border)',
+          borderRadius: '20px',
+          fontSize: '.6rem', letterSpacing: '.1em',
+          textTransform: 'uppercase', color: 'var(--muted2)',
+          background: 'var(--s1)', cursor: 'pointer',
+        }}>Pitch Pipe</button>
 
-        {/* Language selector */}
         <div style={{ display: 'flex', gap: '.3rem' }}>
           {LANGUAGES.map(l => (
             <button key={l.code} onClick={() => setLang(l.code)} style={{
@@ -92,7 +86,6 @@ export default function Header({ refHz, onChangeRef, lang, setLang, t }) {
           ))}
         </div>
 
-        {/* Dark/Light toggle */}
         <button onClick={toggleTheme} style={{
           padding: '.4rem .9rem',
           border: '1px solid var(--border)',

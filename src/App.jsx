@@ -4,6 +4,7 @@ import { CATS } from './data/instruments'
 import { usePitchDetection } from './hooks/usePitchDetection'
 import { useMetronome } from './hooks/useMetronome'
 import { useLanguage } from './hooks/useLanguage'
+import { useTheme } from './hooks/useTheme'
 import Header from './components/Header'
 import CategoryNav from './components/CategoryNav'
 import SubNav from './components/SubNav'
@@ -11,6 +12,9 @@ import TunerPanel from './components/TunerPanel'
 import SidePanel from './components/SidePanel'
 import MetronomePage from './components/MetronomePage'
 import PitchPipePage from './components/PitchPipePage'
+import PrivacyPage from './components/PrivacyPage'
+import AboutPage from './components/AboutPage'
+import ContactPage from './components/ContactPage'
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
@@ -50,7 +54,7 @@ function TunerPage() {
   }
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header
         refHz={refHz}
         onChangeRef={handleChangeRef}
@@ -74,7 +78,7 @@ function TunerPage() {
       <div style={{
         display: 'grid',
         gridTemplateColumns: isMobile ? '1fr' : '1fr 360px',
-        minHeight: 'calc(100vh - 160px)'
+        flexGrow: 1,
       }}>
         <TunerPanel
           instrument={CATS[activeCat]}
@@ -101,13 +105,30 @@ function TunerPage() {
           />
         )}
       </div>
+
+      <footer style={{
+        borderTop: '1px solid var(--border)',
+        padding: '1.5rem 2.5rem',
+        display: 'flex', justifyContent: 'center', gap: '2rem',
+        fontSize: '.6rem', letterSpacing: '.1em',
+        textTransform: 'uppercase', color: 'var(--muted)',
+      }}>
+        <span onClick={() => navigate('/about')} style={{ cursor: 'pointer' }}>About</span>
+        <span onClick={() => navigate('/contact')} style={{ cursor: 'pointer' }}>Contact</span>
+        <span onClick={() => navigate('/privacy')} style={{ cursor: 'pointer' }}>Privacy</span>
+      </footer>
     </div>
   )
 }
 
 export default function App() {
+  useTheme()
+
   return (
     <Routes>
+      <Route path="/privacy" element={<PrivacyPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/contact" element={<ContactPage />} />
       <Route path="/pitch-pipe" element={<PitchPipePage />} />
       <Route path="/metronome" element={<MetronomePage />} />
       <Route path="/:category/:sub" element={<TunerPage />} />
