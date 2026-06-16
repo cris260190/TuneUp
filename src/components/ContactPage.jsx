@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 import { useLanguage } from '../hooks/useLanguage'
 import { useState } from 'react'
+import { useSEO } from '../hooks/useSEO'
+import { SEO } from '../data/seoData'
 
 const pillBtn = {
   background: 'transparent',
@@ -18,6 +20,7 @@ export default function ContactPage() {
   const { theme, toggleTheme } = useTheme()
   const { t } = useLanguage()
   const [status, setStatus] = useState('idle')
+  useSEO(SEO.contact)
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -119,7 +122,7 @@ export default function ContactPage() {
                 {status === 'sending' ? '...' : t?.contactSend}
               </button>
               <button onClick={() => navigate('/')} type="button" style={{ ...pillBtn, padding: '0.5rem 1.4rem' }}>
-                ← Back
+                {t?.navBack || '← Back'}
               </button>
             </div>
           </form>

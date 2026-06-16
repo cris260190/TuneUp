@@ -31,13 +31,13 @@ export default function TunerPanel({
       padding: '2.5rem',
       borderRight: '1px solid var(--border)',
     }}>
-      {/* Titlu */}
-      <div style={{
+      <h1 style={{
         fontFamily: "'Cormorant Garamond', serif",
-        fontSize: '2.2rem', fontWeight: 600, marginBottom: '.25rem'
+        fontSize: '2.2rem', fontWeight: 600, marginBottom: '.25rem',
+        margin: 0,
       }}>
         {instrument.label} — {activeSub}
-      </div>
+      </h1>
       <div style={{
         fontSize: '.6rem', letterSpacing: '.15em',
         textTransform: 'uppercase', color: 'var(--muted2)',
@@ -143,7 +143,7 @@ export default function TunerPanel({
                 fontSize: '1.6rem', color: 'var(--gold)', lineHeight: 1
               }}>{s.n.replace(/\d/, '')}</span>
               <span style={{ fontSize: '.5rem', color: 'var(--muted2)', letterSpacing: '.1em', textTransform: 'uppercase' }}>
-                String {i + 1}
+                {t?.stringLabel || 'String'} {i + 1}
               </span>
               <span style={{ fontSize: '.55rem', color: 'var(--muted)' }}>{s.f.toFixed(1)} Hz</span>
             </div>

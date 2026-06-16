@@ -69,7 +69,7 @@ export default function Header({ refHz, onChangeRef, lang, setLang, t }) {
           fontSize: '.6rem', letterSpacing: '.1em',
           textTransform: 'uppercase', color: 'var(--muted2)',
           background: 'var(--s1)', cursor: 'pointer',
-        }}>Pitch Pipe</button>
+        }}>{t?.pitchPipe || 'Pitch Pipe'}</button>
 
         <div style={{ display: 'flex', gap: '.3rem' }}>
           {LANGUAGES.map(l => (

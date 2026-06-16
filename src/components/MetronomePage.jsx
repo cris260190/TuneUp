@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 import { useMetronome } from '../hooks/useMetronome'
+import { useLanguage } from '../hooks/useLanguage'
+import { useSEO } from '../hooks/useSEO'
+import { SEO } from '../data/seoData'
 
 const SIGS = [2, 3, 4, 5, 6, 7]
 const TEMPOS = [
@@ -24,7 +27,9 @@ export default function MetronomePage() {
     useMetronome()
   const navigate = useNavigate()
   const { theme, toggleTheme } = useTheme()
+  const { t } = useLanguage()
   const tempoName = getTempoName(bpm)
+  useSEO(SEO.metronome)
 
   return (
     <div style={{
@@ -49,17 +54,17 @@ export default function MetronomePage() {
           }}>
             Tune<em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>Up</em>
             <span style={{ color: 'var(--muted2)', fontSize: '1rem', marginLeft: '.75rem' }}>
-              — Metronome
+              — {t?.metronome || 'Metronome'}
             </span>
           </div>
           <div style={{
             fontSize: '.55rem', letterSpacing: '.3em',
             textTransform: 'uppercase', color: 'var(--muted2)', marginTop: '.1rem'
-          }}>Free Online Metronome</div>
+          }}>{t?.freeOnlineMetronome || 'Free Online Metronome'}</div>
         </div>
         <div style={{ display: 'flex', gap: '.75rem' }}>
-          <button onClick={() => navigate('/pitch-pipe')} style={pillBtn}>Pitch Pipe</button>
-          <button onClick={() => navigate('/')} style={pillBtn}>← Tuner</button>
+          <button onClick={() => navigate('/pitch-pipe')} style={pillBtn}>{t?.pitchPipe || 'Pitch Pipe'}</button>
+          <button onClick={() => navigate('/')} style={pillBtn}>{t?.navTuner || '← Tuner'}</button>
           <button onClick={toggleTheme} style={pillBtn}>{theme === 'dark' ? '☀️' : '🌙'}</button>
         </div>
       </header>
@@ -70,6 +75,15 @@ export default function MetronomePage() {
         padding: '3rem 2rem',
       }}>
         <div style={{ width: '100%', maxWidth: '480px' }}>
+
+          <h1 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: '1.4rem', fontWeight: 600,
+            color: 'var(--muted2)', textAlign: 'center',
+            marginBottom: '1.5rem', letterSpacing: '.05em',
+          }}>
+            {t?.freeOnlineMetronome || 'Free Online Metronome'}
+          </h1>
 
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <div style={{
@@ -160,15 +174,14 @@ export default function MetronomePage() {
             background: isPlaying ? 'var(--red)' : 'var(--gold)',
             color: 'var(--bg)',
           }}>
-            {isPlaying ? '■ Stop' : '▶ Start'}
+            {isPlaying ? (t?.metStop || '■ Stop Metronome') : (t?.metStart || '▶ Start Metronome')}
           </button>
-{/* iOS warning */}
           <div style={{
             marginTop: '1rem', textAlign: 'center',
             fontSize: '.55rem', color: 'var(--muted)',
             letterSpacing: '.1em',
           }}>
-            🔕 iPhone: make sure silent mode is off
+            {t?.iOSWarning || '🔕 iPhone: make sure silent mode is off'}
           </div>
 
         </div>

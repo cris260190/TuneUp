@@ -5,6 +5,8 @@ import { usePitchDetection } from './hooks/usePitchDetection'
 import { useMetronome } from './hooks/useMetronome'
 import { useLanguage } from './hooks/useLanguage'
 import { useTheme } from './hooks/useTheme'
+import { useSEO } from './hooks/useSEO'
+import { SEO } from './data/seoData'
 import Header from './components/Header'
 import CategoryNav from './components/CategoryNav'
 import SubNav from './components/SubNav'
@@ -37,6 +39,9 @@ function TunerPage() {
     ? sub
     : Object.keys(CATS[activeCat].subs)[0]
 
+  const seo = SEO[activeCat] || SEO.guitar
+  useSEO({ title: seo.title, description: seo.description, url: seo.url })
+
   const [refHz, setRefHz] = useState(440)
 
   const { isListening, frequency, note, cents, toggleListening, analyser } =
@@ -67,6 +72,7 @@ function TunerPage() {
         cats={CATS}
         activeCat={activeCat}
         onSetCat={handleSetCat}
+        t={t}
       />
 
       <SubNav
@@ -106,6 +112,28 @@ function TunerPage() {
         )}
       </div>
 
+      {seo.blurb && (
+        <section style={{
+          borderTop: '1px solid var(--border)',
+          padding: '2rem 2.5rem',
+          background: 'var(--s1)',
+        }}>
+          <h2 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: '1.1rem', fontWeight: 600,
+            color: 'var(--text)', marginBottom: '.6rem',
+          }}>
+            {seo.h1}
+          </h2>
+          <p style={{
+            fontSize: '.75rem', lineHeight: 1.8,
+            color: 'var(--muted2)', maxWidth: '680px',
+          }}>
+            {seo.blurb}
+          </p>
+        </section>
+      )}
+
       <footer style={{
         borderTop: '1px solid var(--border)',
         padding: '1.5rem 2.5rem',
@@ -113,9 +141,9 @@ function TunerPage() {
         fontSize: '.6rem', letterSpacing: '.1em',
         textTransform: 'uppercase', color: 'var(--muted)',
       }}>
-        <span onClick={() => navigate('/about')} style={{ cursor: 'pointer' }}>About</span>
-        <span onClick={() => navigate('/contact')} style={{ cursor: 'pointer' }}>Contact</span>
-        <span onClick={() => navigate('/privacy')} style={{ cursor: 'pointer' }}>Privacy</span>
+        <span onClick={() => navigate('/about')} style={{ cursor: 'pointer' }}>{t?.navAbout || 'About'}</span>
+        <span onClick={() => navigate('/contact')} style={{ cursor: 'pointer' }}>{t?.navContact || 'Contact'}</span>
+        <span onClick={() => navigate('/privacy')} style={{ cursor: 'pointer' }}>{t?.navPrivacy || 'Privacy'}</span>
       </footer>
     </div>
   )

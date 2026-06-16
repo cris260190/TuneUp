@@ -8,6 +8,7 @@ export function useLanguage() {
 
   useEffect(() => {
     localStorage.setItem('lang', lang)
+    document.documentElement.lang = lang
   }, [lang])
 
   const t = TRANSLATIONS[lang]

@@ -1,4 +1,12 @@
-export default function CategoryNav({ cats, activeCat, onSetCat }) {
+const CAT_LABEL_KEYS = {
+  guitar: 'catGuitar',
+  bass: 'catBass',
+  strings: 'catStrings',
+  wind: 'catWind',
+  percussion: 'catOther',
+}
+
+export default function CategoryNav({ cats, activeCat, onSetCat, t }) {
   return (
     <nav style={{
       display: 'flex', gap: 0,
@@ -24,7 +32,7 @@ export default function CategoryNav({ cats, activeCat, onSetCat }) {
           }}
         >
           <span style={{ marginRight: '.5rem' }}>{cat.icon}</span>
-          {cat.label}
+          {t?.[CAT_LABEL_KEYS[key]] || cat.label}
         </button>
       ))}
     </nav>

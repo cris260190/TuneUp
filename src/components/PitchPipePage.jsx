@@ -2,6 +2,9 @@ import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 import { getSharedAudioCtx, unlockSharedAudioCtx } from '../hooks/useAudioContext'
+import { useLanguage } from '../hooks/useLanguage'
+import { useSEO } from '../hooks/useSEO'
+import { SEO } from '../data/seoData'
 
 const NOTES = [
   { name: 'C', freq: 261.63 },
@@ -23,6 +26,8 @@ const OCTAVES = [3, 4, 5]
 export default function PitchPipePage() {
   const navigate = useNavigate()
   const { theme, toggleTheme } = useTheme()
+  const { t } = useLanguage()
+  useSEO(SEO.pitchPipe)
   const oscRef = useRef(null)
   const [playing, setPlaying] = useState(null)
   const [octave, setOctave] = useState(4)
@@ -91,16 +96,16 @@ export default function PitchPipePage() {
           }}>
             Tune<em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>Up</em>
             <span style={{ color: 'var(--muted2)', fontSize: '1rem', marginLeft: '.75rem' }}>
-              — Pitch Pipe
+              — {t?.pitchPipe || 'Pitch Pipe'}
             </span>
           </div>
           <div style={{ fontSize: '.55rem', letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--muted2)', marginTop: '.1rem' }}>
-            Free Online Pitch Pipe
+            {t?.freeOnlinePitch || 'Free Online Pitch Pipe'}
           </div>
         </div>
         <div style={{ display: 'flex', gap: '.75rem' }}>
-          <button onClick={() => navigate('/metronome')} style={pillBtn}>Metronome</button>
-          <button onClick={() => navigate('/')} style={pillBtn}>← Tuner</button>
+          <button onClick={() => navigate('/metronome')} style={pillBtn}>{t?.metronome || 'Metronome'}</button>
+          <button onClick={() => navigate('/')} style={pillBtn}>{t?.navTuner || '← Tuner'}</button>
           <button onClick={toggleTheme} style={pillBtn}>{theme === 'dark' ? '☀️' : '🌙'}</button>
         </div>
       </header>
@@ -110,6 +115,14 @@ export default function PitchPipePage() {
         alignItems: 'center', justifyContent: 'center',
         padding: '3rem 2rem', gap: '2.5rem'
       }}>
+
+        <h1 style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: '1.4rem', fontWeight: 600,
+          color: 'var(--muted2)', letterSpacing: '.05em',
+        }}>
+          {t?.freeOnlinePitch || 'Free Online Pitch Pipe'}
+        </h1>
 
         {!unlocked && (
           <button onClick={unlockAudio} style={{
@@ -122,12 +135,12 @@ export default function PitchPipePage() {
             color: 'var(--bg)', cursor: 'pointer',
             fontWeight: 700,
           }}>
-            🔊 Tap to enable audio
+            {t?.tapAudio || '🔊 Tap to enable audio'}
           </button>
         )}
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <span style={{ fontSize: '.6rem', letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--muted2)' }}>Octave</span>
+          <span style={{ fontSize: '.6rem', letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--muted2)' }}>{t?.octave || 'Octave'}</span>
           {OCTAVES.map(o => (
             <button key={o} onClick={() => { setOctave(o); stopNote() }} style={{
               padding: '.4rem .9rem',
@@ -141,7 +154,7 @@ export default function PitchPipePage() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <span style={{ fontSize: '.6rem', letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--muted2)' }}>Sound</span>
+          <span style={{ fontSize: '.6rem', letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--muted2)' }}>{t?.sound || 'Sound'}</span>
           {['sine', 'triangle', 'square'].map(w => (
             <button key={w} onClick={() => setWaveform(w)} style={{
               padding: '.4rem .9rem',
@@ -223,8 +236,8 @@ export default function PitchPipePage() {
           minHeight: '1.5em', textAlign: 'center',
         }}>
           {playing
-            ? <span style={{ color: 'var(--gold)' }}>♪ Playing {playing}</span>
-            : 'Click a note to play'}
+            ? <span style={{ color: 'var(--gold)' }}>{t?.playingNote || '♪ Playing'} {playing}</span>
+            : (t?.clickNote || 'Click a note to play')}
         </div>
 
 {playing && (
@@ -235,7 +248,7 @@ export default function PitchPipePage() {
             letterSpacing: '.15em', textTransform: 'uppercase',
             background: 'none', color: 'var(--red)',
             cursor: 'pointer', transition: 'all .2s',
-          }}>■ Stop</button>
+          }}>{t?.stopNote || '■ Stop'}</button>
         )}
 
         {/* iOS warning */}
@@ -243,7 +256,7 @@ export default function PitchPipePage() {
           fontSize: '.55rem', color: 'var(--muted)',
           letterSpacing: '.1em', textAlign: 'center',
         }}>
-          🔕 iPhone: make sure silent mode is off
+          {t?.iOSWarning || '🔕 iPhone: make sure silent mode is off'}
         </div>
 
       </div>

@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 import { useLanguage } from '../hooks/useLanguage'
+import { useSEO } from '../hooks/useSEO'
+import { SEO } from '../data/seoData'
 
 const pillBtn = {
   background: 'transparent',
@@ -16,6 +18,7 @@ export default function AboutPage() {
   const navigate = useNavigate()
   const { theme, toggleTheme } = useTheme()
   const { t } = useLanguage()
+  useSEO(SEO.about)
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
@@ -47,15 +50,51 @@ export default function AboutPage() {
         </h1>
 
         <p style={{ fontSize: '1.15rem', marginBottom: '1.2rem' }}>
-          {t?.aboutDesc}
+          {t?.aboutIntro1}
         </p>
 
         <p style={{ fontSize: '1.15rem', marginBottom: '1.2rem' }}>
-          {t?.aboutBuilt}
+          {t?.aboutIntro2}
         </p>
 
-        <p style={{ fontSize: '1.15rem', marginBottom: '2.5rem', color: 'var(--gold)' }}>
-          {t?.aboutMic}
+        <p style={{ fontSize: '1.15rem', marginBottom: '1.2rem' }}>
+          {t?.aboutIntro3}
+        </p>
+
+        <p style={{ fontSize: '1.15rem', marginBottom: '2.5rem' }}>
+          {t?.aboutOrigin}
+        </p>
+
+        <h2 style={{
+          fontFamily: "'Space Mono', monospace",
+          fontSize: '.7rem', letterSpacing: '.15em',
+          textTransform: 'uppercase', color: 'var(--gold)',
+          marginBottom: '.6rem',
+        }}>
+          {t?.aboutBelieveTitle}
+        </h2>
+        <p style={{ fontSize: '1.15rem', marginBottom: '2.5rem' }}>
+          {t?.aboutBelieveText}
+        </p>
+
+        <h2 style={{
+          fontFamily: "'Space Mono', monospace",
+          fontSize: '.7rem', letterSpacing: '.15em',
+          textTransform: 'uppercase', color: 'var(--gold)',
+          marginBottom: '.6rem',
+        }}>
+          {t?.aboutComingTitle}
+        </h2>
+        <p style={{ fontSize: '1.15rem', marginBottom: '2.5rem' }}>
+          {t?.aboutComingText}
+        </p>
+
+        <p style={{ fontSize: '1.15rem', marginBottom: '1.2rem', color: 'var(--gold)' }}>
+          {t?.aboutTeamText1}
+        </p>
+
+        <p style={{ fontSize: '1.15rem', marginBottom: '2.5rem' }}>
+          {t?.aboutTeamText2}
         </p>
 
         <button onClick={() => navigate('/')} style={{
@@ -63,7 +102,7 @@ export default function AboutPage() {
           fontSize: '1rem',
           padding: '0.5rem 1.4rem',
         }}>
-          ← Back
+          {t?.navBack || '← Back'}
         </button>
       </main>
     </div>
