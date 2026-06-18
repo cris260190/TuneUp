@@ -17,6 +17,8 @@ import PitchPipePage from './components/PitchPipePage'
 import PrivacyPage from './components/PrivacyPage'
 import AboutPage from './components/AboutPage'
 import ContactPage from './components/ContactPage'
+import ChordLibraryPage from './components/ChordLibraryPage'
+import ChordPage from './components/ChordPage'
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
@@ -95,6 +97,7 @@ function TunerPage() {
           isListening={isListening}
           onToggleListen={toggleListening}
           onSelectRef={() => {}}
+          onViewChords={activeCat === 'guitar' ? () => navigate('/chords/guitar') : null}
           t={t}
         />
 
@@ -141,6 +144,7 @@ function TunerPage() {
         fontSize: '.6rem', letterSpacing: '.1em',
         textTransform: 'uppercase', color: 'var(--muted)',
       }}>
+        <span onClick={() => navigate('/chords/guitar')} style={{ cursor: 'pointer' }}>{t?.navChords || 'Chords'}</span>
         <span onClick={() => navigate('/about')} style={{ cursor: 'pointer' }}>{t?.navAbout || 'About'}</span>
         <span onClick={() => navigate('/contact')} style={{ cursor: 'pointer' }}>{t?.navContact || 'Contact'}</span>
         <span onClick={() => navigate('/privacy')} style={{ cursor: 'pointer' }}>{t?.navPrivacy || 'Privacy'}</span>
@@ -159,6 +163,8 @@ export default function App() {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/pitch-pipe" element={<PitchPipePage />} />
       <Route path="/metronome" element={<MetronomePage />} />
+      <Route path="/chords/guitar/:chord" element={<ChordPage />} />
+      <Route path="/chords/guitar" element={<ChordLibraryPage />} />
       <Route path="/:category/:sub" element={<TunerPage />} />
       <Route path="/:category" element={<TunerPage />} />
       <Route path="/" element={<TunerPage />} />

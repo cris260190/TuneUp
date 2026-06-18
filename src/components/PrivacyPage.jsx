@@ -109,6 +109,7 @@ export default function PrivacyPage() {
         <span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>TuneUp</span>
         <span onClick={() => navigate('/metronome')} style={{ cursor: 'pointer' }}>{t?.metronome || 'Metronome'}</span>
         <span onClick={() => navigate('/pitch-pipe')} style={{ cursor: 'pointer' }}>{t?.pitchPipe || 'Pitch Pipe'}</span>
+        <span onClick={() => navigate('/chords/guitar')} style={{ cursor: 'pointer' }}>{t?.navChords || 'Chords'}</span>
         <span onClick={() => navigate('/about')} style={{ cursor: 'pointer' }}>{t?.navAbout || 'About'}</span>
         <span onClick={() => navigate('/contact')} style={{ cursor: 'pointer' }}>{t?.navContact || 'Contact'}</span>
       </footer>

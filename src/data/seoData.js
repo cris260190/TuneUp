@@ -63,4 +63,9 @@ export const SEO = {
     description: "Have a question or suggestion? Send us feedback — we'd love to hear from musicians using TuneUp.",
     url: `${BASE}/contact`,
   },
+  chordsGuitar: {
+    title: 'Guitar Chord Library — Diagrams & Finger Positions | TuneUp',
+    description: 'Free guitar chord diagrams with finger positions for C, G, D, Em, Am, A, E, F, Dm, B7 and more. Learn how to play every chord, no app needed.',
+    url: `${BASE}/chords/guitar`,
+  },
 }

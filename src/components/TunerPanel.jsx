@@ -1,6 +1,6 @@
-export default function TunerPanel({ 
-  instrument, activeSub, frequency, note, cents, 
-  isListening, onToggleListen, onSelectRef, t
+export default function TunerPanel({
+  instrument, activeSub, frequency, note, cents,
+  isListening, onToggleListen, onSelectRef, onViewChords, t
 }) {
   const inst = instrument.subs[activeSub]
   
@@ -39,11 +39,25 @@ export default function TunerPanel({
         {instrument.label} — {activeSub}
       </h1>
       <div style={{
-        fontSize: '.6rem', letterSpacing: '.15em',
-        textTransform: 'uppercase', color: 'var(--muted2)',
-        marginBottom: '2.5rem'
+        display: 'flex', alignItems: 'baseline', justifyContent: 'space-between',
+        gap: '1rem', marginBottom: '2.5rem',
       }}>
-        {inst.desc}
+        <div style={{
+          fontSize: '.6rem', letterSpacing: '.15em',
+          textTransform: 'uppercase', color: 'var(--muted2)',
+        }}>
+          {inst.desc}
+        </div>
+
+        {onViewChords && (
+          <span onClick={onViewChords} style={{
+            fontSize: '.6rem', letterSpacing: '.1em',
+            textTransform: 'uppercase', color: 'var(--gold)',
+            cursor: 'pointer', whiteSpace: 'nowrap',
+          }}>
+            {t?.navChords || 'Chords'} →
+          </span>
+        )}
       </div>
 
       {/* Frecvență */}
