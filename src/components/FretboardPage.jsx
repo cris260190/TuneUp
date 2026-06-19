@@ -39,21 +39,34 @@ export default function FretboardPage() {
     const ctx = getSharedAudioCtx()
     if (!ctx) return
 
-    const osc  = ctx.createOscillator()
+    const rate   = ctx.sampleRate
+    const period = Math.round(rate / freq)
+    const dur    = 2.0                       // seconds of output
+    const n      = Math.ceil(rate * dur)
+
+    // Karplus-Strong plucked-string synthesis:
+    // seed one period with white noise, then repeatedly average
+    // adjacent samples — this naturally decays like a real string.
+    const buf = new Float32Array(n)
+    for (let i = 0; i < period; i++) buf[i] = Math.random() * 2 - 1
+    const damping = 0.997
+    for (let i = period; i < n; i++) {
+      buf[i] = damping * 0.5 * (buf[i - period] + buf[i - period + 1])
+    }
+
+    const audioBuf = ctx.createBuffer(1, n, rate)
+    audioBuf.getChannelData(0).set(buf)
+
+    const src  = ctx.createBufferSource()
+    src.buffer = audioBuf
+
     const gain = ctx.createGain()
-    osc.connect(gain)
+    gain.gain.setValueAtTime(0.6, ctx.currentTime)
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur)
+
+    src.connect(gain)
     gain.connect(ctx.destination)
-
-    osc.type = 'triangle'
-    osc.frequency.setValueAtTime(freq, ctx.currentTime)
-
-    // guitar-pluck envelope: fast attack, natural decay
-    gain.gain.setValueAtTime(0, ctx.currentTime)
-    gain.gain.linearRampToValueAtTime(0.35, ctx.currentTime + 0.008)
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.0)
-
-    osc.start(ctx.currentTime)
-    osc.stop(ctx.currentTime + 1.0)
+    src.start(ctx.currentTime)
   }
 
   return (
