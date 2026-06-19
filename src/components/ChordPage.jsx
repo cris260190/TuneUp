@@ -4,6 +4,7 @@ import { useLanguage } from '../hooks/useLanguage'
 import { useSEO } from '../hooks/useSEO'
 import { getChordBySlug } from '../data/chordData'
 import ChordDiagram from './ChordDiagram'
+import FingerLegend from './FingerLegend'
 
 const pillBtn = {
   background: 'transparent',
@@ -97,6 +98,18 @@ export default function ChordPage() {
               </span>
             </div>
           ))}
+        </div>
+
+        <h2 style={{
+          fontFamily: "'Space Mono', monospace",
+          fontSize: '.65rem', letterSpacing: '.15em',
+          textTransform: 'uppercase', color: 'var(--gold)',
+          marginBottom: '.8rem', textAlign: 'left',
+        }}>
+          {t?.fingerGuide || 'Finger Guide'}
+        </h2>
+        <div style={{ marginBottom: '2.5rem' }}>
+          <FingerLegend />
         </div>
 
         <div style={{ display: 'flex', gap: '.75rem', justifyContent: 'center' }}>
