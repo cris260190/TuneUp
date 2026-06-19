@@ -1,6 +1,5 @@
 const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-// Open string semitone indices from C: E=4, A=9, D=2, G=7, B=11, e=4
-const OPEN = [4, 9, 2, 7, 11, 4]
+const OPEN = [4, 9, 2, 7, 11, 4]   // E A D G B e
 const STRING_LABELS = ['E', 'A', 'D', 'G', 'B', 'e']
 
 const NOTE_COLORS = [
@@ -18,19 +17,33 @@ const NOTE_COLORS = [
   '#00cec9', // B
 ]
 
+// Roman-numeral positions: the fret where the index finger sits
+const POSITIONS = [
+  { fret: 1,  label: 'I'   },
+  { fret: 5,  label: 'V'   },
+  { fret: 7,  label: 'VII' },
+  { fret: 9,  label: 'IX'  },
+  { fret: 12, label: 'XII' },
+]
+
 const NUM_FRETS = 12
-const FRET_W = 46
-const STRING_H = 26
-const LEFT = 52    // space for labels + nut
-const TOP = 28     // space for fret numbers
-const DOT_R = 10
-const OPEN_X = 20  // x-center for open-string (fret 0) column
+const FRET_W    = 46
+const STRING_H  = 26
+const LEFT      = 52   // space for string name labels + nut
+const TOP       = 52   // increased to fit position-label row above fret numbers
+const DOT_R     = 10
+const OPEN_X    = 20   // x-center for fret-0 (open strings) column
 
 const SVG_W = LEFT + NUM_FRETS * FRET_W + 16
-const SVG_H = TOP + 5 * STRING_H + 28  // +28 for position marker dots below
+const SVG_H = TOP + 5 * STRING_H + 28   // +28 for position-marker dots below strings
 
+// Note circle: centred in the space between fret (f-1) and fret f
 function noteX(fret) {
   return fret === 0 ? OPEN_X : LEFT + (fret - 0.5) * FRET_W
+}
+// Fret wire: the vertical line at the right edge of fret f
+function fretLineX(fret) {
+  return LEFT + fret * FRET_W
 }
 function stringY(i) {
   return TOP + i * STRING_H
@@ -46,50 +59,30 @@ export default function FretboardMap() {
           height={SVG_H}
           style={{ display: 'block' }}
         >
-          {/* nut */}
-          <rect
-            x={LEFT - 3} y={TOP - 2}
-            width={4} height={5 * STRING_H + 4}
-            fill="var(--gold)"
-          />
+          {/* ── position labels (row 1) ── */}
+          {POSITIONS.map(({ fret, label }) => {
+            const x = fretLineX(fret)
+            return (
+              <g key={`pos-${fret}`}>
+                <text
+                  x={x} y={TOP - 34}
+                  textAnchor="middle" fontSize="9" fontWeight="700"
+                  fontFamily="'Space Mono', monospace"
+                  fill="var(--gold)"
+                >
+                  {label}
+                </text>
+                {/* thin tick connecting label to fret-number row */}
+                <line
+                  x1={x} y1={TOP - 26}
+                  x2={x} y2={TOP - 18}
+                  stroke="var(--gold)" strokeWidth={1} opacity={0.5}
+                />
+              </g>
+            )
+          })}
 
-          {/* fret lines */}
-          {Array.from({ length: NUM_FRETS }, (_, i) => (
-            <line
-              key={i + 1}
-              x1={LEFT + (i + 1) * FRET_W} y1={TOP}
-              x2={LEFT + (i + 1) * FRET_W} y2={TOP + 5 * STRING_H}
-              stroke="var(--border)"
-              strokeWidth={i + 1 === 12 ? 2.5 : 1}
-            />
-          ))}
-
-          {/* strings — thicker toward low E */}
-          {Array.from({ length: 6 }, (_, i) => (
-            <line
-              key={i}
-              x1={LEFT} y1={stringY(i)}
-              x2={LEFT + NUM_FRETS * FRET_W} y2={stringY(i)}
-              stroke="var(--border)"
-              strokeWidth={1 + (5 - i) * 0.2}
-            />
-          ))}
-
-          {/* string name labels */}
-          {STRING_LABELS.map((lbl, i) => (
-            <text
-              key={i}
-              x={LEFT - 30} y={stringY(i) + 4}
-              textAnchor="middle"
-              fontSize="11" fontWeight="600"
-              fontFamily="'Space Mono', monospace"
-              fill="var(--muted2)"
-            >
-              {lbl}
-            </text>
-          ))}
-
-          {/* fret numbers (0 = open, 1–12 = frets) */}
+          {/* ── fret numbers (row 2) ── */}
           <text
             x={OPEN_X} y={TOP - 12}
             textAnchor="middle" fontSize="9"
@@ -110,7 +103,50 @@ export default function FretboardMap() {
             </text>
           ))}
 
-          {/* position marker dots below strings (3, 5, 7, 9, double at 12) */}
+          {/* ── nut ── */}
+          <rect
+            x={LEFT - 3} y={TOP - 2}
+            width={4} height={5 * STRING_H + 4}
+            fill="var(--gold)"
+          />
+
+          {/* ── fret lines ── */}
+          {Array.from({ length: NUM_FRETS }, (_, i) => (
+            <line
+              key={i + 1}
+              x1={fretLineX(i + 1)} y1={TOP}
+              x2={fretLineX(i + 1)} y2={TOP + 5 * STRING_H}
+              stroke="var(--border)"
+              strokeWidth={i + 1 === 12 ? 2.5 : 1}
+            />
+          ))}
+
+          {/* ── strings (thicker toward low E) ── */}
+          {Array.from({ length: 6 }, (_, i) => (
+            <line
+              key={i}
+              x1={LEFT} y1={stringY(i)}
+              x2={LEFT + NUM_FRETS * FRET_W} y2={stringY(i)}
+              stroke="var(--border)"
+              strokeWidth={1 + (5 - i) * 0.2}
+            />
+          ))}
+
+          {/* ── string name labels ── */}
+          {STRING_LABELS.map((lbl, i) => (
+            <text
+              key={i}
+              x={LEFT - 30} y={stringY(i) + 4}
+              textAnchor="middle"
+              fontSize="11" fontWeight="600"
+              fontFamily="'Space Mono', monospace"
+              fill="var(--muted2)"
+            >
+              {lbl}
+            </text>
+          ))}
+
+          {/* ── position-marker dots below strings (3 5 7 9 •• 12) ── */}
           {[3, 5, 7, 9].map(f => (
             <circle key={f}
               cx={noteX(f)} cy={TOP + 5 * STRING_H + 15}
@@ -120,12 +156,12 @@ export default function FretboardMap() {
           <circle cx={noteX(12) - 8} cy={TOP + 5 * STRING_H + 15} r={4} fill="var(--border)" />
           <circle cx={noteX(12) + 8} cy={TOP + 5 * STRING_H + 15} r={4} fill="var(--border)" />
 
-          {/* note circles — all 6 strings × 13 positions (frets 0–12) */}
+          {/* ── note circles — 6 strings × 13 positions (frets 0–12) ── */}
           {OPEN.flatMap((openNote, si) =>
             Array.from({ length: NUM_FRETS + 1 }, (_, fi) => {
-              const idx = (openNote + fi) % 12
-              const cx = noteX(fi)
-              const cy = stringY(si)
+              const idx  = (openNote + fi) % 12
+              const cx   = noteX(fi)
+              const cy   = stringY(si)
               const name = NOTE_NAMES[idx]
               return (
                 <g key={`${si}-${fi}`}>
@@ -147,7 +183,7 @@ export default function FretboardMap() {
         </svg>
       </div>
 
-      {/* color legend */}
+      {/* ── color legend ── */}
       <div style={{
         display: 'flex', flexWrap: 'wrap', gap: '6px 14px',
         marginTop: '18px', justifyContent: 'center',
