@@ -73,4 +73,14 @@ export const SEO = {
     description: 'Free color-coded guitar fretboard map showing every note across all 6 strings and 12 frets. Learn where every note lives on the neck — standard tuning, positions I–XII.',
     url: `${BASE}/chords/guitar/fretboard`,
   },
+  transpose: {
+    title: 'Transpose Calculator — Change Guitar Chords to Any Key | TuneUp',
+    description: 'Free guitar chord transposer. Paste your chord list and instantly shift to any key by semitones or target key. Supports major, minor, 7th, maj7, sus4, and slash chords.',
+    url: `${BASE}/transpose`,
+  },
+  progressions: {
+    title: 'Chord Progression Generator — Guitar Chord Progressions in Any Key | TuneUp',
+    description: 'Free guitar chord progression generator. Pick a key and scale, see all 7 diatonic chords, and explore common progressions — Pop, Blues, Jazz, 50s, Rock and more.',
+    url: `${BASE}/progressions`,
+  },
 }

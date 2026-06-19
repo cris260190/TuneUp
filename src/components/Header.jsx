@@ -1,6 +1,80 @@
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 import { LANGUAGES } from '../data/translations'
+
+function LangDropdown({ lang, setLang }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+
+  useEffect(() => {
+    if (!open) return
+    function onDown(e) {
+      if (!ref.current?.contains(e.target)) setOpen(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [open])
+
+  const current = LANGUAGES.find(l => l.code === lang) || LANGUAGES[0]
+
+  return (
+    <div ref={ref} style={{ position: 'relative' }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{
+          display: 'flex', alignItems: 'center', gap: '.35rem',
+          padding: '.3rem .6rem',
+          border: '1px solid var(--gold)',
+          borderRadius: '6px',
+          fontSize: '.6rem', letterSpacing: '.05em',
+          background: 'rgba(212,168,71,.08)',
+          color: 'var(--gold)',
+          cursor: 'pointer',
+          userSelect: 'none',
+        }}
+      >
+        {current.flag} {current.label}
+        <span style={{ fontSize: '.5rem', opacity: .7 }}>▾</span>
+      </button>
+
+      {open && (
+        <div style={{
+          position: 'absolute',
+          top: 'calc(100% + 6px)',
+          right: 0,
+          background: 'var(--s1)',
+          border: '1px solid var(--border)',
+          borderRadius: '8px',
+          padding: '.3rem',
+          zIndex: 200,
+          display: 'flex', flexDirection: 'column', gap: '.15rem',
+          minWidth: '90px',
+          boxShadow: '0 8px 24px rgba(0,0,0,.45)',
+        }}>
+          {LANGUAGES.map(l => (
+            <button
+              key={l.code}
+              onClick={() => { setLang(l.code); setOpen(false) }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '.5rem',
+                padding: '.3rem .55rem',
+                border: 'none', borderRadius: '5px',
+                fontSize: '.6rem', letterSpacing: '.04em',
+                background: lang === l.code ? 'rgba(212,168,71,.15)' : 'transparent',
+                color: lang === l.code ? 'var(--gold)' : 'var(--text)',
+                cursor: 'pointer',
+                textAlign: 'left', width: '100%',
+              }}
+            >
+              {l.flag} {l.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 export default function Header({ refHz, onChangeRef, lang, setLang, t }) {
   const navigate = useNavigate()
@@ -8,7 +82,7 @@ export default function Header({ refHz, onChangeRef, lang, setLang, t }) {
 
   return (
     <header style={{
-      position: 'relative', zIndex: 10,
+      position: 'relative', zIndex: 20,
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       padding: '1.5rem 2.5rem',
       borderBottom: '1px solid var(--border)',
@@ -71,20 +145,25 @@ export default function Header({ refHz, onChangeRef, lang, setLang, t }) {
           background: 'var(--s1)', cursor: 'pointer',
         }}>{t?.pitchPipe || 'Pitch Pipe'}</button>
 
-        <div style={{ display: 'flex', gap: '.3rem' }}>
-          {LANGUAGES.map(l => (
-            <button key={l.code} onClick={() => setLang(l.code)} style={{
-              padding: '.3rem .5rem',
-              border: `1px solid ${lang === l.code ? 'var(--gold)' : 'var(--border)'}`,
-              borderRadius: '6px',
-              fontSize: '.6rem',
-              background: lang === l.code ? 'rgba(212,168,71,.1)' : 'var(--s1)',
-              color: lang === l.code ? 'var(--gold)' : 'var(--muted2)',
-              cursor: 'pointer',
-              transition: 'all .2s',
-            }}>{l.flag} {l.label}</button>
-          ))}
-        </div>
+        <button onClick={() => navigate('/transpose')} style={{
+          padding: '.4rem .9rem',
+          border: '1px solid var(--border)',
+          borderRadius: '20px',
+          fontSize: '.6rem', letterSpacing: '.1em',
+          textTransform: 'uppercase', color: 'var(--muted2)',
+          background: 'var(--s1)', cursor: 'pointer',
+        }}>{t?.navTranspose || 'Transpose'}</button>
+
+        <button onClick={() => navigate('/progressions')} style={{
+          padding: '.4rem .9rem',
+          border: '1px solid var(--border)',
+          borderRadius: '20px',
+          fontSize: '.6rem', letterSpacing: '.1em',
+          textTransform: 'uppercase', color: 'var(--muted2)',
+          background: 'var(--s1)', cursor: 'pointer',
+        }}>{t?.navProgressions || 'Progressions'}</button>
+
+        <LangDropdown lang={lang} setLang={setLang} />
 
         <button onClick={toggleTheme} style={{
           padding: '.4rem .9rem',
