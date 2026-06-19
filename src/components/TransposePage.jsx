@@ -1,4 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
+function useIsMobile() {
+  const [m, setM] = useState(window.innerWidth < 768)
+  useEffect(() => {
+    const h = () => setM(window.innerWidth < 768)
+    window.addEventListener('resize', h)
+    return () => window.removeEventListener('resize', h)
+  }, [])
+  return m
+}
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 import { useLanguage } from '../hooks/useLanguage'
@@ -109,6 +119,7 @@ export default function TransposePage() {
   const { t } = useLanguage()
   useSEO(SEO.transpose)
 
+  const isMobile = useIsMobile()
   const [input, setInput] = useState('G Em C D')
   const [fromKey, setFromKey] = useState('C')
   const [semitones, setSemitones] = useState(0)
@@ -164,26 +175,37 @@ export default function TransposePage() {
 
         {/* Controls */}
         <div style={{
-          display: 'flex',
-          alignItems: 'flex-end',
-          gap: '1rem',
-          flexWrap: 'wrap',
           marginBottom: '2rem',
           padding: '1.2rem 1.5rem',
           background: 'var(--s1)',
           border: '1px solid var(--border)',
           borderRadius: '12px',
+          display: 'flex', flexDirection: 'column', gap: '.9rem',
         }}>
-          {/* From Key */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '.35rem', flex: '1 1 100px', minWidth: 90 }}>
-            <label style={labelStyle}>{t?.transposeFromKey || 'From Key'}</label>
-            <select value={fromKey} onChange={e => setFromKey(e.target.value)} style={selectStyle}>
-              {NOTES.map(n => <option key={n} value={n}>{n}</option>)}
-            </select>
+          {/* Key selectors row */}
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-end' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '.35rem', flex: 1 }}>
+              <label style={labelStyle}>{t?.transposeFromKey || 'From Key'}</label>
+              <select value={fromKey} onChange={e => setFromKey(e.target.value)} style={selectStyle}>
+                {NOTES.map(n => <option key={n} value={n}>{n}</option>)}
+              </select>
+            </div>
+
+            {/* Arrow between keys — desktop only */}
+            {!isMobile && (
+              <span style={{ color: 'var(--muted)', fontSize: '1.1rem', paddingBottom: '.5rem' }}>→</span>
+            )}
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '.35rem', flex: 1 }}>
+              <label style={labelStyle}>{t?.transposeToKey || 'To Key'}</label>
+              <select value={toKey} onChange={e => handleToKeyChange(e.target.value)} style={selectStyle}>
+                {NOTES.map(n => <option key={n} value={n}>{n}</option>)}
+              </select>
+            </div>
           </div>
 
-          {/* Semitone counter */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '.35rem', flex: '0 0 auto' }}>
+          {/* Semitone counter — centered below keys */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '.35rem' }}>
             <label style={labelStyle}>{t?.transposeSemitones || 'Semitones'}</label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '.5rem' }}>
               <button onClick={() => handleSemiDelta(-1)} disabled={semitones <= -12} style={circleBtn(semitones <= -12)}>−</button>
@@ -197,14 +219,6 @@ export default function TransposePage() {
               </span>
               <button onClick={() => handleSemiDelta(+1)} disabled={semitones >= 12} style={circleBtn(semitones >= 12)}>+</button>
             </div>
-          </div>
-
-          {/* To Key */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '.35rem', flex: '1 1 100px', minWidth: 90 }}>
-            <label style={labelStyle}>{t?.transposeToKey || 'To Key'}</label>
-            <select value={toKey} onChange={e => handleToKeyChange(e.target.value)} style={selectStyle}>
-              {NOTES.map(n => <option key={n} value={n}>{n}</option>)}
-            </select>
           </div>
         </div>
 

@@ -1,4 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
+function useIsMobile() {
+  const [m, setM] = useState(window.innerWidth < 768)
+  useEffect(() => {
+    const h = () => setM(window.innerWidth < 768)
+    window.addEventListener('resize', h)
+    return () => window.removeEventListener('resize', h)
+  }, [])
+  return m
+}
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 import { useLanguage } from '../hooks/useLanguage'
@@ -72,6 +82,7 @@ export default function ProgressionsPage() {
   const { t } = useLanguage()
   useSEO(SEO.progressions)
 
+  const isMobile = useIsMobile()
   const [key, setKey]               = useState('C')
   const [scaleKey, setScaleKey]     = useState('major')
   const [selectedProg, setSelected] = useState(0)
@@ -261,8 +272,9 @@ export default function ProgressionsPage() {
                 key={idx}
                 onClick={() => setSelected(idx)}
                 style={{
-                  display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap',
-                  padding: '.85rem 1.2rem',
+                  display: 'flex', alignItems: 'center',
+                  gap: isMobile ? '.6rem' : '1rem',
+                  padding: isMobile ? '.7rem 1rem' : '.85rem 1.2rem',
                   border: isActive ? '1.5px solid var(--gold)' : '1px solid var(--border)',
                   borderRadius: '10px',
                   background: isActive ? 'rgba(212,168,71,.06)' : 'var(--s1)',
@@ -276,25 +288,28 @@ export default function ProgressionsPage() {
                   fontFamily: "'Space Mono', monospace",
                   fontSize: '.72rem', fontWeight: 700,
                   color: isActive ? 'var(--gold)' : 'var(--text)',
-                  minWidth: '80px',
+                  minWidth: isMobile ? '60px' : '80px',
+                  flexShrink: 0,
                 }}>
                   {prog.name}
                 </span>
 
-                {/* Roman numeral pattern */}
-                <span style={{
-                  fontFamily: "'Space Mono', monospace",
-                  fontSize: '.65rem', color: 'var(--muted2)',
-                  flex: '1 1 140px',
-                }}>
-                  {prog.pattern}
-                </span>
+                {/* Roman numeral pattern — desktop only */}
+                {!isMobile && (
+                  <span style={{
+                    fontFamily: "'Space Mono', monospace",
+                    fontSize: '.65rem', color: 'var(--muted2)',
+                    flex: '1 1 140px',
+                  }}>
+                    {prog.pattern}
+                  </span>
+                )}
 
                 {/* Chord names */}
                 <span style={{
                   fontFamily: "'Cormorant Garamond', serif",
                   fontSize: '1.1rem', fontWeight: 600,
-                  color: 'var(--text)', flex: '1 1 160px',
+                  color: 'var(--text)', flex: 1,
                   letterSpacing: '.02em',
                 }}>
                   {names.join('  –  ')}

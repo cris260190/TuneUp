@@ -3,6 +3,16 @@ import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 import { LANGUAGES } from '../data/translations'
 
+function useIsMobile() {
+  const [m, setM] = useState(window.innerWidth < 768)
+  useEffect(() => {
+    const h = () => setM(window.innerWidth < 768)
+    window.addEventListener('resize', h)
+    return () => window.removeEventListener('resize', h)
+  }, [])
+  return m
+}
+
 function LangDropdown({ lang, setLang }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
@@ -76,108 +86,118 @@ function LangDropdown({ lang, setLang }) {
   )
 }
 
+const NAV_BTN = {
+  padding: '.4rem .9rem',
+  border: '1px solid var(--border)',
+  borderRadius: '20px',
+  fontSize: '.6rem', letterSpacing: '.1em',
+  textTransform: 'uppercase', color: 'var(--muted2)',
+  background: 'var(--s1)', cursor: 'pointer',
+  whiteSpace: 'nowrap', flexShrink: 0,
+}
+
 export default function Header({ refHz, onChangeRef, lang, setLang, t }) {
   const navigate = useNavigate()
   const { theme, toggleTheme } = useTheme()
+  const isMobile = useIsMobile()
 
   return (
     <header style={{
       position: 'relative', zIndex: 20,
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      padding: '1.5rem 2.5rem',
       borderBottom: '1px solid var(--border)',
       background: 'rgba(8,8,14,.8)',
       backdropFilter: 'blur(12px)',
     }}>
-      <div onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-        <div style={{
-          fontFamily: "'Cormorant Garamond', serif",
-          fontSize: '1.8rem', fontWeight: 600, letterSpacing: '-.01em'
-        }}>
-          Tune<em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>Up</em>
+
+      {/* ── Main row ── */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: isMobile ? '1rem 1.2rem' : '1.5rem 2.5rem',
+      }}>
+        {/* Logo */}
+        <div onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+          <div style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: '1.8rem', fontWeight: 600, letterSpacing: '-.01em',
+          }}>
+            Tune<em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>Up</em>
+          </div>
+          {!isMobile && (
+            <div style={{
+              fontSize: '.55rem', letterSpacing: '.3em',
+              textTransform: 'uppercase', color: 'var(--muted2)', marginTop: '.1rem',
+            }}>
+              {t?.tagline || 'Free Instrument Tuner'}
+            </div>
+          )}
         </div>
-        <div style={{
-          fontSize: '.55rem', letterSpacing: '.3em',
-          textTransform: 'uppercase', color: 'var(--muted2)', marginTop: '.1rem'
-        }}>
-          {t?.tagline || 'Free Instrument Tuner'}
+
+        {/* Right controls */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '.6rem' }}>
+          {/* A4 reference */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '.4rem',
+            padding: '.4rem .8rem', border: '1px solid var(--border)',
+            borderRadius: '20px', fontSize: '.6rem',
+            letterSpacing: '.1em', color: 'var(--muted2)',
+            background: 'var(--s1)',
+          }}>
+            A4 =
+            <button onClick={() => onChangeRef(-1)} style={{
+              background: 'none', border: 'none', color: 'var(--muted2)',
+              cursor: 'pointer', fontSize: '.8rem', padding: '0 .2rem',
+            }}>−</button>
+            <strong style={{ color: 'var(--gold)', fontSize: '.75rem' }}>{refHz}</strong>
+            <button onClick={() => onChangeRef(1)} style={{
+              background: 'none', border: 'none', color: 'var(--muted2)',
+              cursor: 'pointer', fontSize: '.8rem', padding: '0 .2rem',
+            }}>+</button>
+            Hz
+          </div>
+
+          {/* Desktop-only tool nav */}
+          {!isMobile && (
+            <>
+              <button onClick={() => navigate('/metronome')} style={NAV_BTN}>{t?.metronome || 'Metronome'}</button>
+              <button onClick={() => navigate('/pitch-pipe')} style={NAV_BTN}>{t?.pitchPipe || 'Pitch Pipe'}</button>
+              <button onClick={() => navigate('/transpose')} style={NAV_BTN}>{t?.navTranspose || 'Transpose'}</button>
+              <button onClick={() => navigate('/progressions')} style={NAV_BTN}>{t?.navProgressions || 'Progressions'}</button>
+            </>
+          )}
+
+          <LangDropdown lang={lang} setLang={setLang} />
+
+          <button onClick={toggleTheme} style={{
+            padding: '.4rem .9rem',
+            border: '1px solid var(--border)',
+            borderRadius: '20px',
+            fontSize: '.8rem',
+            background: 'var(--s1)',
+            cursor: 'pointer',
+            color: 'var(--muted2)',
+          }}>
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '.75rem', flexWrap: 'wrap' }}>
-
+      {/* ── Mobile tool strip ── */}
+      {isMobile && (
         <div style={{
-          display: 'flex', alignItems: 'center', gap: '.5rem',
-          padding: '.4rem .9rem', border: '1px solid var(--border)',
-          borderRadius: '20px', fontSize: '.6rem',
-          letterSpacing: '.1em', color: 'var(--muted2)',
-          background: 'var(--s1)',
+          display: 'flex', gap: '.5rem',
+          overflowX: 'auto', WebkitOverflowScrolling: 'touch',
+          padding: '.5rem 1.2rem .7rem',
+          borderTop: '1px solid rgba(255,255,255,.06)',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
         }}>
-          A4 =
-          <button onClick={() => onChangeRef(-1)} style={{
-            background: 'none', border: 'none', color: 'var(--muted2)',
-            cursor: 'pointer', fontSize: '.8rem', padding: '0 .2rem'
-          }}>−</button>
-          <strong style={{ color: 'var(--gold)', fontSize: '.75rem' }}>{refHz}</strong>
-          <button onClick={() => onChangeRef(1)} style={{
-            background: 'none', border: 'none', color: 'var(--muted2)',
-            cursor: 'pointer', fontSize: '.8rem', padding: '0 .2rem'
-          }}>+</button>
-          Hz
+          <button onClick={() => navigate('/metronome')} style={NAV_BTN}>{t?.metronome || 'Metronome'}</button>
+          <button onClick={() => navigate('/pitch-pipe')} style={NAV_BTN}>{t?.pitchPipe || 'Pitch Pipe'}</button>
+          <button onClick={() => navigate('/transpose')} style={NAV_BTN}>{t?.navTranspose || 'Transpose'}</button>
+          <button onClick={() => navigate('/progressions')} style={NAV_BTN}>{t?.navProgressions || 'Progressions'}</button>
         </div>
+      )}
 
-        <button onClick={() => navigate('/metronome')} style={{
-          padding: '.4rem .9rem',
-          border: '1px solid var(--border)',
-          borderRadius: '20px',
-          fontSize: '.6rem', letterSpacing: '.1em',
-          textTransform: 'uppercase', color: 'var(--muted2)',
-          background: 'var(--s1)',
-          cursor: 'pointer',
-        }}>{t?.metronome || 'Metronome'}</button>
-
-        <button onClick={() => navigate('/pitch-pipe')} style={{
-          padding: '.4rem .9rem',
-          border: '1px solid var(--border)',
-          borderRadius: '20px',
-          fontSize: '.6rem', letterSpacing: '.1em',
-          textTransform: 'uppercase', color: 'var(--muted2)',
-          background: 'var(--s1)', cursor: 'pointer',
-        }}>{t?.pitchPipe || 'Pitch Pipe'}</button>
-
-        <button onClick={() => navigate('/transpose')} style={{
-          padding: '.4rem .9rem',
-          border: '1px solid var(--border)',
-          borderRadius: '20px',
-          fontSize: '.6rem', letterSpacing: '.1em',
-          textTransform: 'uppercase', color: 'var(--muted2)',
-          background: 'var(--s1)', cursor: 'pointer',
-        }}>{t?.navTranspose || 'Transpose'}</button>
-
-        <button onClick={() => navigate('/progressions')} style={{
-          padding: '.4rem .9rem',
-          border: '1px solid var(--border)',
-          borderRadius: '20px',
-          fontSize: '.6rem', letterSpacing: '.1em',
-          textTransform: 'uppercase', color: 'var(--muted2)',
-          background: 'var(--s1)', cursor: 'pointer',
-        }}>{t?.navProgressions || 'Progressions'}</button>
-
-        <LangDropdown lang={lang} setLang={setLang} />
-
-        <button onClick={toggleTheme} style={{
-          padding: '.4rem .9rem',
-          border: '1px solid var(--border)',
-          borderRadius: '20px',
-          fontSize: '.8rem',
-          background: 'var(--s1)',
-          cursor: 'pointer',
-          color: 'var(--muted2)',
-        }}>
-          {theme === 'dark' ? '☀️' : '🌙'}
-        </button>
-
-      </div>
     </header>
   )
 }
