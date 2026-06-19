@@ -6,7 +6,6 @@ import { useSEO } from '../hooks/useSEO'
 import { SEO } from '../data/seoData'
 import { GUITAR_CHORDS, CHORD_ROOTS, CHORD_TYPES } from '../data/chordData'
 import ChordDiagram from './ChordDiagram'
-import FretboardMap from './FretboardMap'
 
 const pillBtn = {
   background: 'transparent',
@@ -23,8 +22,6 @@ export default function ChordLibraryPage() {
   const { theme, toggleTheme } = useTheme()
   const { t } = useLanguage()
   useSEO(SEO.chordsGuitar)
-
-  const [view, setView] = useState('chords') // 'chords' | 'fretboard'
 
   const availableRoots = CHORD_ROOTS.filter(r => GUITAR_CHORDS.some(c => c.root === r))
   const [selectedRoot, setSelectedRoot] = useState(availableRoots[0] || 'C')
@@ -74,40 +71,36 @@ export default function ChordLibraryPage() {
           {t?.chordLibrarySubtitle || 'Beginner-friendly chord diagrams with finger positions.'}
         </p>
 
-        {/* View switcher */}
+        {/* tab strip */}
         <div style={{ display: 'flex', gap: '.4rem', marginBottom: '1.8rem' }}>
-          {[['chords', 'Chords'], ['fretboard', 'Fretboard Map']].map(([v, label]) => (
-            <button
-              key={v}
-              onClick={() => setView(v)}
-              style={{
-                fontFamily: "'Space Mono', monospace",
-                fontSize: '.72rem', letterSpacing: '.05em',
-                padding: '.3rem 1rem',
-                borderRadius: '999px',
-                border: view === v ? '1.5px solid var(--gold)' : '1px solid var(--border)',
-                background: view === v ? 'var(--gold)' : 'transparent',
-                color: view === v ? 'var(--bg)' : 'var(--text)',
-                cursor: 'pointer',
-                transition: 'all .15s',
-              }}
-            >
-              {label}
-            </button>
-          ))}
+          <button
+            style={{
+              fontFamily: "'Space Mono', monospace",
+              fontSize: '.72rem', letterSpacing: '.05em',
+              padding: '.3rem 1rem', borderRadius: '999px',
+              border: '1.5px solid var(--gold)',
+              background: 'var(--gold)', color: 'var(--bg)',
+              cursor: 'default',
+            }}
+          >
+            Chords
+          </button>
+          <button
+            onClick={() => navigate('/chords/guitar/fretboard')}
+            style={{
+              fontFamily: "'Space Mono', monospace",
+              fontSize: '.72rem', letterSpacing: '.05em',
+              padding: '.3rem 1rem', borderRadius: '999px',
+              border: '1px solid var(--border)',
+              background: 'transparent', color: 'var(--text)',
+              cursor: 'pointer', transition: 'all .15s',
+            }}
+          >
+            Fretboard Map
+          </button>
         </div>
 
-        {/* ── Fretboard Map ── */}
-        {view === 'fretboard' && (
-          <div style={{ marginBottom: '3rem' }}>
-            <FretboardMap />
-          </div>
-        )}
-
-        {/* ── Chords view ── */}
-        {view === 'chords' && (
-          <>
-            {/* Root tabs */}
+        {/* Root tabs */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.4rem', marginBottom: '1.2rem' }}>
               {CHORD_ROOTS.map(root => {
                 const hasChords = GUITAR_CHORDS.some(c => c.root === root)
@@ -208,8 +201,6 @@ export default function ChordLibraryPage() {
                 ))}
               </div>
             )}
-          </>
-        )}
 
         <button onClick={() => navigate('/guitar')} style={{
           ...pillBtn,

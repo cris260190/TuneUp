@@ -19,6 +19,7 @@ import AboutPage from './components/AboutPage'
 import ContactPage from './components/ContactPage'
 import ChordLibraryPage from './components/ChordLibraryPage'
 import ChordPage from './components/ChordPage'
+import FretboardPage from './components/FretboardPage'
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
@@ -163,6 +164,7 @@ export default function App() {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/pitch-pipe" element={<PitchPipePage />} />
       <Route path="/metronome" element={<MetronomePage />} />
+      <Route path="/chords/guitar/fretboard" element={<FretboardPage />} />
       <Route path="/chords/guitar/:chord" element={<ChordPage />} />
       <Route path="/chords/guitar" element={<ChordLibraryPage />} />
       <Route path="/:category/:sub" element={<TunerPage />} />

@@ -68,4 +68,9 @@ export const SEO = {
     description: 'Free guitar chord diagrams with finger positions for C, G, D, Em, Am, A, E, F, Dm, B7 and more. Learn how to play every chord, no app needed.',
     url: `${BASE}/chords/guitar`,
   },
+  chordsGuitarFretboard: {
+    title: 'Guitar Fretboard Map — All Notes on All 6 Strings | TuneUp',
+    description: 'Free color-coded guitar fretboard map showing every note across all 6 strings and 12 frets. Learn where every note lives on the neck — standard tuning, positions I–XII.',
+    url: `${BASE}/chords/guitar/fretboard`,
+  },
 }
