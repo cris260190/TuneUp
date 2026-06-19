@@ -63,6 +63,16 @@ export const SEO = {
     description: "Have a question or suggestion? Send us feedback — we'd love to hear from musicians using TuneUp.",
     url: `${BASE}/contact`,
   },
+  chordsBassFretboard: {
+    title: 'Bass Fretboard Map — All Notes on 4-String & 5-String Bass | TuneUp',
+    description: 'Free colour-coded bass fretboard map showing every note across all strings and 12 frets. 4-string (E A D G) and 5-string (B E A D G) bass. Tap any note to hear it.',
+    url: `${BASE}/chords/bass/fretboard`,
+  },
+  chordsBass: {
+    title: 'Bass Chord Library — 4-String & 5-String Bass Guitar Chords | TuneUp',
+    description: 'Free bass guitar chord diagrams for 4-string and 5-string bass. Every chord with finger positions — Major, Minor, 7th, power chords and more. No app needed.',
+    url: `${BASE}/chords/bass`,
+  },
   chordsGuitar: {
     title: 'Guitar Chord Library — Diagrams & Finger Positions | TuneUp',
     description: 'Free guitar chord diagrams with finger positions for C, G, D, Em, Am, A, E, F, Dm, B7 and more. Learn how to play every chord, no app needed.',
