@@ -46,6 +46,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://freetuner.app/chords/guitar/fretboard</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://freetuner.app/chords/guitar/c</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
