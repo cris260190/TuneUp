@@ -30,6 +30,7 @@ import UkuleleChordPage from './components/UkuleleChordPage'
 import UkuleleFretboardPage from './components/UkuleleFretboardPage'
 import MandolinChordLibraryPage from './components/MandolinChordLibraryPage'
 import MandolinChordPage from './components/MandolinChordPage'
+import MandolinFretboardPage from './components/MandolinFretboardPage'
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
@@ -179,6 +180,7 @@ export default function App() {
       <Route path="/pitch-pipe" element={<PitchPipePage />} />
       <Route path="/metronome" element={<MetronomePage />} />
       <Route path="/transpose" element={<TransposePage />} />
+      <Route path="/chords/mandolin/fretboard" element={<MandolinFretboardPage />} />
       <Route path="/chords/mandolin/:chord" element={<MandolinChordPage />} />
       <Route path="/chords/mandolin" element={<MandolinChordLibraryPage />} />
       <Route path="/chords/ukulele/fretboard" element={<UkuleleFretboardPage />} />

@@ -46,6 +46,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://freetuner.app/chords/mandolin/fretboard</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://freetuner.app/chords/ukulele</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

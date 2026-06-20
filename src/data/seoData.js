@@ -63,6 +63,11 @@ export const SEO = {
     description: "Have a question or suggestion? Send us feedback — we'd love to hear from musicians using TuneUp.",
     url: `${BASE}/contact`,
   },
+  chordsMandolinFretboard: {
+    title: 'Mandolin Fretboard Map — All Notes on G D A E | TuneUp',
+    description: 'Free colour-coded mandolin fretboard map showing every note across 4 courses and 12 frets. Standard tuning G D A E. Tap any note to hear it.',
+    url: `${BASE}/chords/mandolin/fretboard`,
+  },
   chordsMandolin: {
     title: 'Mandolin Chord Library — G D A E Chord Diagrams | TuneUp',
     description: 'Free mandolin chord diagrams with finger positions. Standard tuning G D A E — Major, Minor, 7th, maj7, sus4, diminished and more. No app needed.',
