@@ -31,6 +31,8 @@ import UkuleleFretboardPage from './components/UkuleleFretboardPage'
 import MandolinChordLibraryPage from './components/MandolinChordLibraryPage'
 import MandolinChordPage from './components/MandolinChordPage'
 import MandolinFretboardPage from './components/MandolinFretboardPage'
+import BanjoChordLibraryPage from './components/BanjoChordLibraryPage'
+import BanjoChordPage from './components/BanjoChordPage'
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
@@ -113,7 +115,8 @@ function TunerPage() {
             activeCat === 'guitar' ? () => navigate('/chords/guitar') :
             activeCat === 'bass'   ? () => navigate('/chords/bass')   :
             (activeCat === 'strings' && activeSub === 'Ukulele')   ? () => navigate('/chords/ukulele')   :
-            (activeCat === 'strings' && activeSub === 'Mandolin')  ? () => navigate('/chords/mandolin')  : null
+            (activeCat === 'strings' && activeSub === 'Mandolin')    ? () => navigate('/chords/mandolin')    :
+            (activeCat === 'strings' && activeSub === 'Banjo 5-str') ? () => navigate('/chords/banjo')        : null
           }
           t={t}
         />
@@ -180,6 +183,8 @@ export default function App() {
       <Route path="/pitch-pipe" element={<PitchPipePage />} />
       <Route path="/metronome" element={<MetronomePage />} />
       <Route path="/transpose" element={<TransposePage />} />
+      <Route path="/chords/banjo/:chord" element={<BanjoChordPage />} />
+      <Route path="/chords/banjo" element={<BanjoChordLibraryPage />} />
       <Route path="/chords/mandolin/fretboard" element={<MandolinFretboardPage />} />
       <Route path="/chords/mandolin/:chord" element={<MandolinChordPage />} />
       <Route path="/chords/mandolin" element={<MandolinChordLibraryPage />} />
