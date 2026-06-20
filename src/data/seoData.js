@@ -63,6 +63,11 @@ export const SEO = {
     description: "Have a question or suggestion? Send us feedback — we'd love to hear from musicians using TuneUp.",
     url: `${BASE}/contact`,
   },
+  chordsUkuleleFretboard: {
+    title: 'Ukulele Fretboard Map — All Notes, Standard & Baritone | TuneUp',
+    description: 'Free colour-coded ukulele fretboard map showing every note across 4 strings and 12 frets. Standard (G C E A) and Baritone (D G B E) tuning. Tap any note to hear it.',
+    url: `${BASE}/chords/ukulele/fretboard`,
+  },
   chordsUkulele: {
     title: 'Ukulele Chord Library — Standard & Baritone Chord Diagrams | TuneUp',
     description: 'Free ukulele chord diagrams for standard (G C E A) and baritone (D G B E) tuning. Major, Minor, 7th, maj7, sus4 and more — no app needed.',

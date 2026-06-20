@@ -95,6 +95,12 @@ export default function UkuleleChordLibraryPage() {
           Chord diagrams for Standard (G C E A) and Baritone (D G B E) ukulele. Click a chord to see both voicings.
         </p>
 
+        {/* Chords | Fretboard Map tab strip */}
+        <div style={{ display: 'flex', gap: '.4rem', marginBottom: '1.8rem' }}>
+          <button style={TAB(true)}>Chords</button>
+          <button onClick={() => navigate('/chords/ukulele/fretboard')} style={TAB(false)}>Fretboard Map</button>
+        </div>
+
         {/* Standard / Baritone toggle */}
         <div style={{ display: 'flex', gap: '.4rem', marginBottom: '1.8rem' }}>
           <button onClick={() => handleTuningChange('standard')} style={TAB(tuning === 'standard')}>

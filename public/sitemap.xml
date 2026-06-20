@@ -46,6 +46,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://freetuner.app/chords/ukulele/fretboard</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://freetuner.app/chords/bass</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
