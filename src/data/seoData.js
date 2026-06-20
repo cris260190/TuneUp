@@ -63,6 +63,11 @@ export const SEO = {
     description: "Have a question or suggestion? Send us feedback — we'd love to hear from musicians using TuneUp.",
     url: `${BASE}/contact`,
   },
+  chordsMandolin: {
+    title: 'Mandolin Chord Library — G D A E Chord Diagrams | TuneUp',
+    description: 'Free mandolin chord diagrams with finger positions. Standard tuning G D A E — Major, Minor, 7th, maj7, sus4, diminished and more. No app needed.',
+    url: `${BASE}/chords/mandolin`,
+  },
   chordsUkuleleFretboard: {
     title: 'Ukulele Fretboard Map — All Notes, Standard & Baritone | TuneUp',
     description: 'Free colour-coded ukulele fretboard map showing every note across 4 strings and 12 frets. Standard (G C E A) and Baritone (D G B E) tuning. Tap any note to hear it.',
