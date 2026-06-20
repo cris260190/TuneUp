@@ -25,6 +25,8 @@ import ProgressionsPage from './components/ProgressionsPage'
 import BassChordLibraryPage from './components/BassChordLibraryPage'
 import BassChordPage from './components/BassChordPage'
 import BassFretboardPage from './components/BassFretboardPage'
+import UkuleleChordLibraryPage from './components/UkuleleChordLibraryPage'
+import UkuleleChordPage from './components/UkuleleChordPage'
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
@@ -105,7 +107,8 @@ function TunerPage() {
           onSelectRef={() => {}}
           onViewChords={
             activeCat === 'guitar' ? () => navigate('/chords/guitar') :
-            activeCat === 'bass'   ? () => navigate('/chords/bass')   : null
+            activeCat === 'bass'   ? () => navigate('/chords/bass')   :
+            (activeCat === 'strings' && activeSub === 'Ukulele') ? () => navigate('/chords/ukulele') : null
           }
           t={t}
         />
@@ -172,6 +175,8 @@ export default function App() {
       <Route path="/pitch-pipe" element={<PitchPipePage />} />
       <Route path="/metronome" element={<MetronomePage />} />
       <Route path="/transpose" element={<TransposePage />} />
+      <Route path="/chords/ukulele/:chord" element={<UkuleleChordPage />} />
+      <Route path="/chords/ukulele" element={<UkuleleChordLibraryPage />} />
       <Route path="/chords/bass/fretboard" element={<BassFretboardPage />} />
       <Route path="/chords/bass/:chord" element={<BassChordPage />} />
       <Route path="/chords/bass" element={<BassChordLibraryPage />} />
