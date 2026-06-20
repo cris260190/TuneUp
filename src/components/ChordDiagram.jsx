@@ -1,4 +1,3 @@
-const NUM_STRINGS = 6
 const NUM_FRETS = 4
 const STRING_GAP = 18
 const FRET_GAP = 24
@@ -12,9 +11,9 @@ function fretY(j) {
   return TOP + j * FRET_GAP
 }
 
-export default function ChordDiagram({ chord, size = 140 }) {
+export default function ChordDiagram({ chord, size = 140, numStrings = 6 }) {
   const { frets, fingers = [], baseFret = 1, barre } = chord
-  const width = LEFT * 2 + (NUM_STRINGS - 1) * STRING_GAP
+  const width = LEFT * 2 + (numStrings - 1) * STRING_GAP
   const height = TOP + NUM_FRETS * FRET_GAP + 14
 
   return (
@@ -49,7 +48,7 @@ export default function ChordDiagram({ chord, size = 140 }) {
       <rect
         x={stringX(0)}
         y={fretY(0) - (baseFret === 1 ? 3 : 1)}
-        width={stringX(5) - stringX(0)}
+        width={stringX(numStrings - 1) - stringX(0)}
         height={baseFret === 1 ? 3 : 1}
         fill="var(--gold)"
       />
@@ -59,13 +58,13 @@ export default function ChordDiagram({ chord, size = 140 }) {
         <line
           key={`fret-${j}`}
           x1={stringX(0)} y1={fretY(j)}
-          x2={stringX(5)} y2={fretY(j)}
+          x2={stringX(numStrings - 1)} y2={fretY(j)}
           stroke="var(--border)" strokeWidth="1"
         />
       ))}
 
       {/* strings */}
-      {Array.from({ length: NUM_STRINGS }).map((_, i) => (
+      {Array.from({ length: numStrings }).map((_, i) => (
         <line
           key={`string-${i}`}
           x1={stringX(i)} y1={fretY(0)}
