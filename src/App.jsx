@@ -31,6 +31,9 @@ import UkuleleFretboardPage from './components/UkuleleFretboardPage'
 import CelloChordLibraryPage from './components/CelloChordLibraryPage'
 import CelloChordPage from './components/CelloChordPage'
 import CelloFretboardPage from './components/CelloFretboardPage'
+import ViolaChordLibraryPage from './components/ViolaChordLibraryPage'
+import ViolaChordPage from './components/ViolaChordPage'
+import ViolaFretboardPage from './components/ViolaFretboardPage'
 import MandolinChordLibraryPage from './components/MandolinChordLibraryPage'
 import MandolinChordPage from './components/MandolinChordPage'
 import MandolinFretboardPage from './components/MandolinFretboardPage'
@@ -121,7 +124,8 @@ function TunerPage() {
             (activeCat === 'strings' && activeSub === 'Mandolin')    ? () => navigate('/chords/mandolin')    :
             (activeCat === 'strings' && activeSub === 'Banjo 5-str') ? () => navigate('/chords/banjo')        :
             (activeCat === 'strings' && activeSub === 'Double Bass') ? () => navigate('/chords/bass')         :
-            (activeCat === 'strings' && activeSub === 'Cello')       ? () => navigate('/chords/cello')        : null
+            (activeCat === 'strings' && activeSub === 'Cello')       ? () => navigate('/chords/cello')        :
+            (activeCat === 'strings' && activeSub === 'Viola')       ? () => navigate('/chords/viola')        : null
           }
           t={t}
         />
@@ -190,6 +194,9 @@ export default function App() {
       <Route path="/transpose" element={<TransposePage />} />
       <Route path="/chords/banjo/:chord" element={<BanjoChordPage />} />
       <Route path="/chords/banjo" element={<BanjoChordLibraryPage />} />
+      <Route path="/chords/viola/fretboard" element={<ViolaFretboardPage />} />
+      <Route path="/chords/viola/:chord" element={<ViolaChordPage />} />
+      <Route path="/chords/viola" element={<ViolaChordLibraryPage />} />
       <Route path="/chords/cello/fretboard" element={<CelloFretboardPage />} />
       <Route path="/chords/cello/:chord" element={<CelloChordPage />} />
       <Route path="/chords/cello" element={<CelloChordLibraryPage />} />
