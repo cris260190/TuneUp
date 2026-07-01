@@ -28,6 +28,8 @@ import BassFretboardPage from './components/BassFretboardPage'
 import UkuleleChordLibraryPage from './components/UkuleleChordLibraryPage'
 import UkuleleChordPage from './components/UkuleleChordPage'
 import UkuleleFretboardPage from './components/UkuleleFretboardPage'
+import CelloChordLibraryPage from './components/CelloChordLibraryPage'
+import CelloChordPage from './components/CelloChordPage'
 import MandolinChordLibraryPage from './components/MandolinChordLibraryPage'
 import MandolinChordPage from './components/MandolinChordPage'
 import MandolinFretboardPage from './components/MandolinFretboardPage'
@@ -117,7 +119,8 @@ function TunerPage() {
             (activeCat === 'strings' && activeSub === 'Ukulele')   ? () => navigate('/chords/ukulele')   :
             (activeCat === 'strings' && activeSub === 'Mandolin')    ? () => navigate('/chords/mandolin')    :
             (activeCat === 'strings' && activeSub === 'Banjo 5-str') ? () => navigate('/chords/banjo')        :
-            (activeCat === 'strings' && activeSub === 'Double Bass') ? () => navigate('/chords/bass')         : null
+            (activeCat === 'strings' && activeSub === 'Double Bass') ? () => navigate('/chords/bass')         :
+            (activeCat === 'strings' && activeSub === 'Cello')       ? () => navigate('/chords/cello')        : null
           }
           t={t}
         />
@@ -186,6 +189,8 @@ export default function App() {
       <Route path="/transpose" element={<TransposePage />} />
       <Route path="/chords/banjo/:chord" element={<BanjoChordPage />} />
       <Route path="/chords/banjo" element={<BanjoChordLibraryPage />} />
+      <Route path="/chords/cello/:chord" element={<CelloChordPage />} />
+      <Route path="/chords/cello" element={<CelloChordLibraryPage />} />
       <Route path="/chords/mandolin/fretboard" element={<MandolinFretboardPage />} />
       <Route path="/chords/mandolin/:chord" element={<MandolinChordPage />} />
       <Route path="/chords/mandolin" element={<MandolinChordLibraryPage />} />
