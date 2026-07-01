@@ -30,6 +30,7 @@ import UkuleleChordPage from './components/UkuleleChordPage'
 import UkuleleFretboardPage from './components/UkuleleFretboardPage'
 import CelloChordLibraryPage from './components/CelloChordLibraryPage'
 import CelloChordPage from './components/CelloChordPage'
+import CelloFretboardPage from './components/CelloFretboardPage'
 import MandolinChordLibraryPage from './components/MandolinChordLibraryPage'
 import MandolinChordPage from './components/MandolinChordPage'
 import MandolinFretboardPage from './components/MandolinFretboardPage'
@@ -189,6 +190,7 @@ export default function App() {
       <Route path="/transpose" element={<TransposePage />} />
       <Route path="/chords/banjo/:chord" element={<BanjoChordPage />} />
       <Route path="/chords/banjo" element={<BanjoChordLibraryPage />} />
+      <Route path="/chords/cello/fretboard" element={<CelloFretboardPage />} />
       <Route path="/chords/cello/:chord" element={<CelloChordPage />} />
       <Route path="/chords/cello" element={<CelloChordLibraryPage />} />
       <Route path="/chords/mandolin/fretboard" element={<MandolinFretboardPage />} />

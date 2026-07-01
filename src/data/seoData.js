@@ -68,6 +68,11 @@ export const SEO = {
     description: 'Free 5-string banjo chord diagrams with finger positions. Open G tuning (g D G B d) — Major, Minor, 7th, sus4, diminished and more. No app needed.',
     url: `${BASE}/chords/banjo`,
   },
+  chordsCelloFretboard: {
+    title: 'Cello Fretboard Map — Approximate Note Positions C G D A | TuneUp',
+    description: 'Colour-coded cello note map across 4 strings and 12 positions. Tuning C G D A — approximate reference for fretless cello. Tap any note to hear it.',
+    url: `${BASE}/chords/cello/fretboard`,
+  },
   chordsCello: {
     title: 'Cello Chord Library — C G D A Positional Shapes | TuneUp',
     description: 'Free cello chord diagrams with finger positions. Standard tuning C G D A — Major, Minor, 7th, maj7, sus4, diminished and more. No app needed.',

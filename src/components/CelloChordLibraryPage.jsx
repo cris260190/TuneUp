@@ -80,6 +80,12 @@ export default function CelloChordLibraryPage() {
           Positional chord shapes for cello — tuning C G D A. Click a chord for full detail.
         </p>
 
+        {/* Chords | Fretboard Map tab strip */}
+        <div style={{ display: 'flex', gap: '.4rem', marginBottom: '1.8rem' }}>
+          <button style={TAB(true)}>Chords</button>
+          <button onClick={() => navigate('/chords/cello/fretboard')} style={TAB(false)}>Fretboard Map</button>
+        </div>
+
         {/* Root tabs */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.4rem', marginBottom: '1.2rem' }}>
           {CELLO_CHORD_ROOTS.map(root => {
