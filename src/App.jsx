@@ -116,7 +116,8 @@ function TunerPage() {
             activeCat === 'bass'   ? () => navigate('/chords/bass')   :
             (activeCat === 'strings' && activeSub === 'Ukulele')   ? () => navigate('/chords/ukulele')   :
             (activeCat === 'strings' && activeSub === 'Mandolin')    ? () => navigate('/chords/mandolin')    :
-            (activeCat === 'strings' && activeSub === 'Banjo 5-str') ? () => navigate('/chords/banjo')        : null
+            (activeCat === 'strings' && activeSub === 'Banjo 5-str') ? () => navigate('/chords/banjo')        :
+            (activeCat === 'strings' && activeSub === 'Double Bass') ? () => navigate('/chords/bass')         : null
           }
           t={t}
         />
