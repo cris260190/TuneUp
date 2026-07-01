@@ -63,6 +63,16 @@ export const SEO = {
     description: "Have a question or suggestion? Send us feedback — we'd love to hear from musicians using TuneUp.",
     url: `${BASE}/contact`,
   },
+  chordsViolinFretboard: {
+    title: 'Violin Fretboard Map — Approximate Note Positions G D A E | TuneUp',
+    description: 'Colour-coded violin note map across 4 strings and 12 positions. Tuning G D A E — approximate reference for fretless violin. Tap any note to hear it.',
+    url: `${BASE}/chords/violin/fretboard`,
+  },
+  chordsViolin: {
+    title: 'Violin Chord Library — G D A E Positional Shapes | TuneUp',
+    description: 'Free violin chord diagrams with finger positions. Tuning G D A E — Major, Minor, 7th, maj7, sus4, diminished and more. No app needed.',
+    url: `${BASE}/chords/violin`,
+  },
   chordsBanjo: {
     title: 'Banjo Chord Library — 5-String Open G Chord Diagrams | TuneUp',
     description: 'Free 5-string banjo chord diagrams with finger positions. Open G tuning (g D G B d) — Major, Minor, 7th, sus4, diminished and more. No app needed.',

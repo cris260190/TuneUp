@@ -39,6 +39,9 @@ import MandolinChordPage from './components/MandolinChordPage'
 import MandolinFretboardPage from './components/MandolinFretboardPage'
 import BanjoChordLibraryPage from './components/BanjoChordLibraryPage'
 import BanjoChordPage from './components/BanjoChordPage'
+import ViolinChordLibraryPage from './components/ViolinChordLibraryPage'
+import ViolinChordPage from './components/ViolinChordPage'
+import ViolinFretboardPage from './components/ViolinFretboardPage'
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
@@ -125,7 +128,8 @@ function TunerPage() {
             (activeCat === 'strings' && activeSub === 'Banjo 5-str') ? () => navigate('/chords/banjo')        :
             (activeCat === 'strings' && activeSub === 'Double Bass') ? () => navigate('/chords/bass')         :
             (activeCat === 'strings' && activeSub === 'Cello')       ? () => navigate('/chords/cello')        :
-            (activeCat === 'strings' && activeSub === 'Viola')       ? () => navigate('/chords/viola')        : null
+            (activeCat === 'strings' && activeSub === 'Viola')       ? () => navigate('/chords/viola')        :
+            (activeCat === 'strings' && activeSub === 'Violin')      ? () => navigate('/chords/violin')       : null
           }
           t={t}
         />
@@ -192,6 +196,9 @@ export default function App() {
       <Route path="/pitch-pipe" element={<PitchPipePage />} />
       <Route path="/metronome" element={<MetronomePage />} />
       <Route path="/transpose" element={<TransposePage />} />
+      <Route path="/chords/violin/fretboard" element={<ViolinFretboardPage />} />
+      <Route path="/chords/violin/:chord" element={<ViolinChordPage />} />
+      <Route path="/chords/violin" element={<ViolinChordLibraryPage />} />
       <Route path="/chords/banjo/:chord" element={<BanjoChordPage />} />
       <Route path="/chords/banjo" element={<BanjoChordLibraryPage />} />
       <Route path="/chords/viola/fretboard" element={<ViolaFretboardPage />} />
