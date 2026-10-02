@@ -1,3 +1,5 @@
+import OpeningNotes from './OpeningNotes'
+
 export default function TunerPanel({
   instrument, activeSub, frequency, note, cents,
   isListening, onToggleListen, onSelectRef, onViewChords, onViewFingering, t
@@ -30,7 +32,9 @@ export default function TunerPanel({
     <div style={{
       padding: '2.5rem',
       borderRight: '1px solid var(--border)',
+      position: 'relative',
     }}>
+      <OpeningNotes />
       <h1 style={{
         fontFamily: "'Cormorant Garamond', serif",
         fontSize: '2.2rem', fontWeight: 600, marginBottom: '.25rem',
