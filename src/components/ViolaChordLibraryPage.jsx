@@ -181,10 +181,10 @@ export default function ViolaChordLibraryPage() {
           </div>
         )}
 
-        <button onClick={() => navigate('/strings/Viola')} style={{
+        <button onClick={() => navigate('/')} style={{
           ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem', marginTop: '3rem',
         }}>
-          {t?.chordBackToTuner || '← Viola Tuner'}
+          {t?.navMain || '← Main page'}
         </button>
       </main>
     </div>

@@ -110,13 +110,13 @@ export default function BassFretboardPage() {
             onClick={() => navigate('/chords/bass')}
             style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}
           >
-            ← Bass Chord Library
+            {t?.chordBackToLibrary || '← All Chords'}
           </button>
           <button
-            onClick={() => navigate('/bass')}
+            onClick={() => navigate('/')}
             style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}
           >
-            {t?.chordBackToTuner || '← Bass Tuner'}
+            {t?.navMain || '← Main page'}
           </button>
         </div>
       </main>

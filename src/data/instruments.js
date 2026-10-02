@@ -165,7 +165,7 @@ export const CATS = {
   },
   percussion: {
     icon: '🎹',
-    label: 'Other',
+    label: 'Piano',
     subs: {
       'Piano': {
         desc: 'Piano — Chromatic reference A0–C8',

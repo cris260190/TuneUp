@@ -115,8 +115,8 @@ export default function FretboardPage() {
           <button onClick={() => navigate('/chords/guitar')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
             {t?.chordBackToLibrary || '← All Chords'}
           </button>
-          <button onClick={() => navigate('/guitar')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
-            {t?.chordBackToTuner || '← Guitar Tuner'}
+          <button onClick={() => navigate('/')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
+            {t?.navMain || '← Main page'}
           </button>
         </div>
       </main>

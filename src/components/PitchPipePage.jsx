@@ -105,7 +105,7 @@ export default function PitchPipePage() {
         </div>
         <div style={{ display: 'flex', gap: '.75rem' }}>
           <button onClick={() => navigate('/metronome')} style={pillBtn}>{t?.metronome || 'Metronome'}</button>
-          <button onClick={() => navigate('/')} style={pillBtn}>{t?.navTuner || '← Tuner'}</button>
+          <button onClick={() => navigate('/')} style={pillBtn}>{t?.navMain || '← Main page'}</button>
           <button onClick={toggleTheme} style={pillBtn}>{theme === 'dark' ? '☀️' : '🌙'}</button>
         </div>
       </header>

@@ -106,10 +106,10 @@ export default function ViolinFretboardPage() {
 
         <div style={{ display: 'flex', gap: '.75rem', flexWrap: 'wrap', marginTop: '3rem' }}>
           <button onClick={() => navigate('/chords/violin')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
-            ← Violin Chord Library
+            {t?.chordBackToLibrary || '← All Chords'}
           </button>
-          <button onClick={() => navigate('/strings/Violin')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
-            {t?.chordBackToTuner || '← Violin Tuner'}
+          <button onClick={() => navigate('/')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
+            {t?.navMain || '← Main page'}
           </button>
         </div>
       </main>

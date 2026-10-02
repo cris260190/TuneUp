@@ -1,6 +1,6 @@
 export default function TunerPanel({
   instrument, activeSub, frequency, note, cents,
-  isListening, onToggleListen, onSelectRef, onViewChords, t
+  isListening, onToggleListen, onSelectRef, onViewChords, onViewFingering, t
 }) {
   const inst = instrument.subs[activeSub]
   
@@ -36,11 +36,11 @@ export default function TunerPanel({
         fontSize: '2.2rem', fontWeight: 600, marginBottom: '.25rem',
         margin: 0,
       }}>
-        {instrument.label} — {activeSub}
+        {instrument.label === activeSub ? instrument.label : `${instrument.label} — ${activeSub}`}
       </h1>
       <div style={{
         display: 'flex', alignItems: 'baseline', justifyContent: 'space-between',
-        gap: '1rem', marginBottom: '2.5rem',
+        gap: '1rem', marginBottom: '2.5rem', flexWrap: 'wrap',
       }}>
         <div style={{
           fontSize: '.6rem', letterSpacing: '.15em',
@@ -49,14 +49,27 @@ export default function TunerPanel({
           {inst.desc}
         </div>
 
-        {onViewChords && (
-          <span onClick={onViewChords} style={{
-            fontSize: '.6rem', letterSpacing: '.1em',
-            textTransform: 'uppercase', color: 'var(--gold)',
-            cursor: 'pointer', whiteSpace: 'nowrap',
-          }}>
-            {t?.navChords || 'Chords'} →
-          </span>
+        {(onViewFingering || onViewChords) && (
+          <div style={{ display: 'flex', gap: '1rem', flexShrink: 0 }}>
+            {onViewFingering && (
+              <span onClick={onViewFingering} style={{
+                fontSize: '.6rem', letterSpacing: '.1em',
+                textTransform: 'uppercase', color: 'var(--gold)',
+                cursor: 'pointer', whiteSpace: 'nowrap',
+              }}>
+                {t?.navFingering || 'Fingering'} →
+              </span>
+            )}
+            {onViewChords && (
+              <span onClick={onViewChords} style={{
+                fontSize: '.6rem', letterSpacing: '.1em',
+                textTransform: 'uppercase', color: 'var(--gold)',
+                cursor: 'pointer', whiteSpace: 'nowrap',
+              }}>
+                {t?.navChords || 'Chords'} →
+              </span>
+            )}
+          </div>
         )}
       </div>
 

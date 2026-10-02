@@ -64,7 +64,7 @@ export default function MetronomePage() {
         </div>
         <div style={{ display: 'flex', gap: '.75rem' }}>
           <button onClick={() => navigate('/pitch-pipe')} style={pillBtn}>{t?.pitchPipe || 'Pitch Pipe'}</button>
-          <button onClick={() => navigate('/')} style={pillBtn}>{t?.navTuner || '← Tuner'}</button>
+          <button onClick={() => navigate('/')} style={pillBtn}>{t?.navMain || '← Main page'}</button>
           <button onClick={toggleTheme} style={pillBtn}>{theme === 'dark' ? '☀️' : '🌙'}</button>
         </div>
       </header>

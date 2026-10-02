@@ -4,7 +4,7 @@ import { useLanguage } from '../hooks/useLanguage'
 import { useSEO } from '../hooks/useSEO'
 import { getChordBySlug } from '../data/chordData'
 import ChordDiagram from './ChordDiagram'
-import FingerLegend from './FingerLegend'
+import PalmGuide from './PalmGuide'
 
 const pillBtn = {
   background: 'transparent',
@@ -81,6 +81,18 @@ export default function ChordPage() {
           textTransform: 'uppercase', color: 'var(--gold)',
           marginBottom: '.8rem', textAlign: 'left',
         }}>
+          {t?.fingerGuide || 'Finger Guide'}
+        </h2>
+        <div style={{ marginBottom: '2.5rem' }}>
+          <PalmGuide />
+        </div>
+
+        <h2 style={{
+          fontFamily: "'Space Mono', monospace",
+          fontSize: '.65rem', letterSpacing: '.15em',
+          textTransform: 'uppercase', color: 'var(--gold)',
+          marginBottom: '.8rem', textAlign: 'left',
+        }}>
           {t?.chordFingerPosition}
         </h2>
 
@@ -100,18 +112,6 @@ export default function ChordPage() {
           ))}
         </div>
 
-        <h2 style={{
-          fontFamily: "'Space Mono', monospace",
-          fontSize: '.65rem', letterSpacing: '.15em',
-          textTransform: 'uppercase', color: 'var(--gold)',
-          marginBottom: '.8rem', textAlign: 'left',
-        }}>
-          {t?.fingerGuide || 'Finger Guide'}
-        </h2>
-        <div style={{ marginBottom: '2.5rem' }}>
-          <FingerLegend />
-        </div>
-
         <div style={{ display: 'flex', gap: '.75rem', justifyContent: 'center' }}>
           <button onClick={() => navigate('/chords/guitar')} style={{
             ...pillBtn,
@@ -120,12 +120,12 @@ export default function ChordPage() {
           }}>
             {t?.chordBackToLibrary || '← All Chords'}
           </button>
-          <button onClick={() => navigate('/guitar')} style={{
+          <button onClick={() => navigate('/')} style={{
             ...pillBtn,
             fontSize: '1rem',
             padding: '0.5rem 1.4rem',
           }}>
-            {t?.chordBackToTuner || '← Guitar Tuner'}
+            {t?.navMain || '← Main page'}
           </button>
         </div>
       </main>

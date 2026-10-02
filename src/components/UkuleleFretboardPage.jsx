@@ -119,13 +119,13 @@ export default function UkuleleFretboardPage() {
             onClick={() => navigate('/chords/ukulele')}
             style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}
           >
-            ← Ukulele Chord Library
+            {t?.chordBackToLibrary || '← All Chords'}
           </button>
           <button
-            onClick={() => navigate('/strings/Ukulele')}
+            onClick={() => navigate('/')}
             style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}
           >
-            {t?.chordBackToTuner || '← Ukulele Tuner'}
+            {t?.navMain || '← Main page'}
           </button>
         </div>
       </main>

@@ -3,7 +3,7 @@ const CAT_LABEL_KEYS = {
   bass: 'catBass',
   strings: 'catStrings',
   wind: 'catWind',
-  percussion: 'catOther',
+  percussion: 'catPiano',
 }
 
 export default function CategoryNav({ cats, activeCat, onSetCat, t }) {

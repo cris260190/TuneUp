@@ -4,7 +4,7 @@ import { useLanguage } from '../hooks/useLanguage'
 import { useSEO } from '../hooks/useSEO'
 import { getMandolinChordBySlug } from '../data/mandolinChordData'
 import ChordDiagram from './ChordDiagram'
-import FingerLegend from './FingerLegend'
+import PalmGuide from './PalmGuide'
 
 const pillBtn = {
   background: 'transparent',
@@ -35,7 +35,7 @@ export default function MandolinChordPage() {
   if (!chord) {
     return (
       <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <button onClick={() => navigate('/chords/mandolin')} style={pillBtn}>← All Mandolin Chords</button>
+        <button onClick={() => navigate('/chords/mandolin')} style={pillBtn}>{t?.chordBackToLibrary || '← All Chords'}</button>
       </div>
     )
   }
@@ -108,15 +108,15 @@ export default function MandolinChordPage() {
           {t?.fingerGuide || 'Finger Guide'}
         </h2>
         <div style={{ marginBottom: '2.5rem' }}>
-          <FingerLegend />
+          <PalmGuide />
         </div>
 
         <div style={{ display: 'flex', gap: '.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
           <button onClick={() => navigate('/chords/mandolin')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
-            ← All Mandolin Chords
+            {t?.chordBackToLibrary || '← All Chords'}
           </button>
-          <button onClick={() => navigate('/strings/Mandolin')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
-            {t?.chordBackToTuner || '← Mandolin Tuner'}
+          <button onClick={() => navigate('/')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
+            {t?.navMain || '← Main page'}
           </button>
         </div>
       </main>

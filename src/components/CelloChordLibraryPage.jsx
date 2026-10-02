@@ -181,10 +181,10 @@ export default function CelloChordLibraryPage() {
           </div>
         )}
 
-        <button onClick={() => navigate('/strings/Cello')} style={{
+        <button onClick={() => navigate('/')} style={{
           ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem', marginTop: '3rem',
         }}>
-          {t?.chordBackToTuner || '← Cello Tuner'}
+          {t?.navMain || '← Main page'}
         </button>
       </main>
     </div>

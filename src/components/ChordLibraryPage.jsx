@@ -202,13 +202,13 @@ export default function ChordLibraryPage() {
               </div>
             )}
 
-        <button onClick={() => navigate('/guitar')} style={{
+        <button onClick={() => navigate('/')} style={{
           ...pillBtn,
           fontSize: '1rem',
           padding: '0.5rem 1.4rem',
           marginTop: '3rem',
         }}>
-          {t?.chordBackToTuner || '← Back to Guitar Tuner'}
+          {t?.navMain || '← Main page'}
         </button>
       </main>
     </div>

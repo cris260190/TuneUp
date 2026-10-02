@@ -63,6 +63,111 @@ export const SEO = {
     description: "Have a question or suggestion? Send us feedback — we'd love to hear from musicians using TuneUp.",
     url: `${BASE}/contact`,
   },
+  fluteFingering: {
+    title: 'Flute Fingering Chart — All Notes C4 to D7 | TuneUp',
+    description: 'Free concert flute fingering chart with key diagrams for all notes from C4 to D7. Three octaves, standard Boehm fingerings — no app needed.',
+    url: `${BASE}/flute-fingering`,
+  },
+  clarinetFingering: {
+    title: 'Clarinet Fingering Chart — Bb Clarinet Written Notes | TuneUp',
+    description: 'Free Boehm Bb clarinet fingering chart with key diagrams from low E to altissimo. Written pitch — no app needed.',
+    url: `${BASE}/clarinet-fingering`,
+  },
+  oboeFingering: {
+    title: 'Oboe Fingering Chart — Conservatoire System | TuneUp',
+    description: 'Free conservatoire oboe fingering chart with key diagrams from low Bb to high G. Concert pitch — no app needed.',
+    url: `${BASE}/oboe-fingering`,
+  },
+  saxophoneFingering: {
+    title: 'Saxophone Fingering Chart — Alto Sax Written Notes | TuneUp',
+    description: 'Free alto saxophone fingering chart with key diagrams from low Bb to high F. Written pitch, same fingerings on tenor — no app needed.',
+    url: `${BASE}/saxophone-fingering`,
+  },
+  recorderFingering: {
+    title: 'Recorder Fingering Chart — Soprano Baroque Fingerings | TuneUp',
+    description: 'Free soprano recorder fingering chart with hole diagrams from C5 to D7. Baroque/English fingerings — no app needed.',
+    url: `${BASE}/recorder-fingering`,
+  },
+  trumpetFingering: {
+    title: 'Trumpet Fingering Chart — Bb Trumpet Valves | TuneUp',
+    description: 'Free Bb trumpet fingering chart. Written pitch, valves 1–2–3, from low F# to high C. Same fingers on cornet and flugelhorn.',
+    url: `${BASE}/trumpet-fingering`,
+  },
+  hornFingering: {
+    title: 'French Horn Fingering Chart — F Horn Valves | TuneUp',
+    description: 'Free F horn fingering chart, written pitch. F-side fingerings of a double horn, from E3 to high C.',
+    url: `${BASE}/french-horn-fingering`,
+  },
+  tromboneFingering: {
+    title: 'Trombone Slide Chart — Positions 1 to 7 | TuneUp',
+    description: 'Free tenor trombone slide chart in concert pitch. One standard position for every note from E2 to F5.',
+    url: `${BASE}/trombone-fingering`,
+  },
+  tubaFingering: {
+    title: 'Tuba Fingering Chart — BBb Tuba, 3 Valves | TuneUp',
+    description: 'Free BBb tuba fingering chart in concert pitch. Three-valve combinations from E1 to F4, with the notes that run sharp.',
+    url: `${BASE}/tuba-fingering`,
+  },
+  harmonicaFingering: {
+    title: 'Harmonica Chart — Diatonic in C, Bends and Overblows | TuneUp',
+    description: 'Free C diatonic harmonica chart. Blow, draw, bends and overblows for every note from C4 to C6.',
+    url: `${BASE}/harmonica-fingering`,
+  },
+  fluteChords: {
+    title: 'Flute Chords — Arpeggio Fingerings and Explanations | TuneUp',
+    description: 'Flute chords as arpeggios. Major, minor, 7th, sus and more, with the fingering of every note and a plain explanation of the chord.',
+    url: `${BASE}/chords/flute`,
+  },
+  clarinetChords: {
+    title: 'Clarinet Chords — Written Arpeggios and Explanations | TuneUp',
+    description: 'Bb clarinet chords in written pitch. See each chord tone’s fingering, what the chord is, and the concert pitch it sounds.',
+    url: `${BASE}/chords/clarinet`,
+  },
+  oboeChords: {
+    title: 'Oboe Chords — Arpeggio Fingerings and Explanations | TuneUp',
+    description: 'Oboe chords as arpeggios in concert pitch. Major, minor, 7th, sus and more, with a fingering for every note and a short explanation.',
+    url: `${BASE}/chords/oboe`,
+  },
+  saxophoneChords: {
+    title: 'Saxophone Chords — Written Arpeggios and Explanations | TuneUp',
+    description: 'Alto saxophone chords in written pitch. Fingerings for every chord tone, what the chord is, and the concert chord it sounds.',
+    url: `${BASE}/chords/saxophone`,
+  },
+  recorderChords: {
+    title: 'Recorder Chords — Arpeggio Fingerings and Explanations | TuneUp',
+    description: 'Soprano recorder chords as arpeggios. Baroque fingerings for every note of the chord, plus a plain explanation.',
+    url: `${BASE}/chords/recorder`,
+  },
+  trumpetChords: {
+    title: 'Trumpet Chords — Valve Arpeggios and Explanations | TuneUp',
+    description: 'Bb trumpet chords in written pitch. Valve combinations for every note of the chord, and what major, minor, 7th and the others mean.',
+    url: `${BASE}/chords/trumpet`,
+  },
+  hornChords: {
+    title: 'French Horn Chords — F Horn Arpeggios and Explanations | TuneUp',
+    description: 'F horn chords in written pitch. Valve combinations for each chord tone, a short explanation, and the concert chord it sounds.',
+    url: `${BASE}/chords/french-horn`,
+  },
+  tromboneChords: {
+    title: 'Trombone Chords — Slide Arpeggios and Explanations | TuneUp',
+    description: 'Tenor trombone chords in concert pitch. Slide position for every note of the chord, and a plain explanation of the harmony.',
+    url: `${BASE}/chords/trombone`,
+  },
+  tubaChords: {
+    title: 'Tuba Chords — Valve Arpeggios and Explanations | TuneUp',
+    description: 'BBb tuba chords in concert pitch. Three-valve fingerings for every chord tone, plus what the chord is made of.',
+    url: `${BASE}/chords/tuba`,
+  },
+  harmonicaChords: {
+    title: 'Harmonica Chords — Blow, Draw and Bend Arpeggios | TuneUp',
+    description: 'C diatonic harmonica chords. Each note of the arpeggio shows the hole, the breath, and any bend or overblow, with an explanation of the chord.',
+    url: `${BASE}/chords/harmonica`,
+  },
+  pianoChords: {
+    title: 'Piano Chords — Two Hands on the Keyboard | TuneUp',
+    description: 'Piano chords in both hands. See every key of the chord, switch inversion, and hear the notes together. Major, minor, 7th and the rest, with a plain explanation.',
+    url: `${BASE}/chords/piano`,
+  },
   chordsViolinFretboard: {
     title: 'Violin Fretboard Map — Approximate Note Positions G D A E | TuneUp',
     description: 'Colour-coded violin note map across 4 strings and 12 positions. Tuning G D A E — approximate reference for fretless violin. Tap any note to hear it.',
@@ -127,6 +232,11 @@ export const SEO = {
     title: 'Bass Chord Library — 4-String & 5-String Bass Guitar Chords | TuneUp',
     description: 'Free bass guitar chord diagrams for 4-string and 5-string bass. Every chord with finger positions — Major, Minor, 7th, power chords and more. No app needed.',
     url: `${BASE}/chords/bass`,
+  },
+  chordsDoubleBass: {
+    title: 'Double Bass Chord Library — E A D G Chord Diagrams | TuneUp',
+    description: 'Free double bass chord diagrams with finger positions. Tuning E A D G. Each chord uses the shared 1–4 finger chart, with a note on lower-position fingering.',
+    url: `${BASE}/chords/double-bass`,
   },
   chordsGuitar: {
     title: 'Guitar Chord Library — Diagrams & Finger Positions | TuneUp',

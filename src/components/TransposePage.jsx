@@ -295,8 +295,8 @@ export default function TransposePage() {
 
         {/* Back navigation */}
         <div style={{ marginTop: '3rem', display: 'flex', gap: '.75rem', flexWrap: 'wrap' }}>
-          <button onClick={() => navigate('/guitar')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
-            {t?.navTuner || '← Tuner'}
+          <button onClick={() => navigate('/')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
+            {t?.navMain || '← Main page'}
           </button>
           <button onClick={() => navigate('/chords/guitar')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
             {t?.navChords || 'Chords'}

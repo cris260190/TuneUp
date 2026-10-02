@@ -4,7 +4,7 @@ import { useLanguage } from '../hooks/useLanguage'
 import { useSEO } from '../hooks/useSEO'
 import { getViolaChordBySlug } from '../data/violaChordData'
 import ChordDiagram from './ChordDiagram'
-import FingerLegend from './FingerLegend'
+import PalmGuide from './PalmGuide'
 
 const pillBtn = {
   background: 'transparent',
@@ -35,7 +35,7 @@ export default function ViolaChordPage() {
   if (!chord) {
     return (
       <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <button onClick={() => navigate('/chords/viola')} style={pillBtn}>← All Viola Chords</button>
+        <button onClick={() => navigate('/chords/viola')} style={pillBtn}>{t?.chordBackToLibrary || '← All Chords'}</button>
       </div>
     )
   }
@@ -77,6 +77,18 @@ export default function ViolaChordPage() {
           <ChordDiagram chord={chord} size={180} numStrings={chord.frets.length} />
         </div>
 
+        <h2 style={{
+          fontFamily: "'Space Mono', monospace",
+          fontSize: '.65rem', letterSpacing: '.15em',
+          textTransform: 'uppercase', color: 'var(--gold)',
+          marginBottom: '.8rem', textAlign: 'left',
+        }}>
+          {t?.fingerGuide || 'Finger Guide'}
+        </h2>
+        <div style={{ marginBottom: '2.5rem' }}>
+          <PalmGuide />
+        </div>
+
         <div style={{ marginBottom: '2rem', textAlign: 'left' }}>
           {chord.frets.map((f, i) => (
             <div key={i} style={{
@@ -97,24 +109,12 @@ export default function ViolaChordPage() {
           ))}
         </div>
 
-        <h2 style={{
-          fontFamily: "'Space Mono', monospace",
-          fontSize: '.65rem', letterSpacing: '.15em',
-          textTransform: 'uppercase', color: 'var(--gold)',
-          marginBottom: '.8rem', textAlign: 'left',
-        }}>
-          {t?.fingerGuide || 'Finger Guide'}
-        </h2>
-        <div style={{ marginBottom: '2.5rem' }}>
-          <FingerLegend />
-        </div>
-
         <div style={{ display: 'flex', gap: '.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
           <button onClick={() => navigate('/chords/viola')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
-            ← All Viola Chords
+            {t?.chordBackToLibrary || '← All Chords'}
           </button>
-          <button onClick={() => navigate('/strings/Viola')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
-            {t?.chordBackToTuner || '← Viola Tuner'}
+          <button onClick={() => navigate('/')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
+            {t?.navMain || '← Main page'}
           </button>
         </div>
       </main>

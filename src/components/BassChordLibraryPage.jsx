@@ -27,11 +27,12 @@ const TAB = (active) => ({
   cursor: 'pointer', transition: 'all .15s',
 })
 
-export default function BassChordLibraryPage() {
+export default function BassChordLibraryPage({ doubleBass = false }) {
   const navigate = useNavigate()
   const { theme, toggleTheme } = useTheme()
   const { t } = useLanguage()
-  useSEO(SEO.chordsBass)
+  const libraryPath = doubleBass ? '/chords/double-bass' : '/chords/bass'
+  useSEO(doubleBass ? SEO.chordsDoubleBass : SEO.chordsBass)
 
   const [strCount, setStrCount] = useState(4)
   const [selectedRoot, setSelectedRoot] = useState('C')
@@ -55,7 +56,7 @@ export default function BassChordLibraryPage() {
   }
 
   function handleChordClick(chord) {
-    navigate(`/chords/bass/${encodeURIComponent(chord.name.toLowerCase())}`)
+    navigate(`${libraryPath}/${encodeURIComponent(chord.name.toLowerCase())}`)
   }
 
   return (
@@ -81,10 +82,12 @@ export default function BassChordLibraryPage() {
           fontSize: '2.2rem', fontWeight: 600,
           color: 'var(--gold)', marginBottom: '.5rem',
         }}>
-          Bass Chord Library
+          {doubleBass ? 'Double Bass Chord Library' : 'Bass Chord Library'}
         </h1>
         <p style={{ color: 'var(--muted2)', fontSize: '.9rem', marginBottom: '1.5rem' }}>
-          Chord diagrams for 4-string and 5-string bass guitar. Click a chord to see both voicings.
+          {doubleBass
+            ? 'Chord diagrams for double bass, tuning E A D G. Click a chord to see the fingering.'
+            : 'Chord diagrams for 4-string and 5-string bass guitar. Click a chord to see both voicings.'}
         </p>
 
         {/* Chords | Fretboard Map tab strip */}
@@ -198,10 +201,10 @@ export default function BassChordLibraryPage() {
           </div>
         )}
 
-        <button onClick={() => navigate('/bass')} style={{
+        <button onClick={() => navigate('/')} style={{
           ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem', marginTop: '3rem',
         }}>
-          {t?.chordBackToTuner || '← Bass Tuner'}
+          {t?.navMain || '← Main page'}
         </button>
       </main>
     </div>

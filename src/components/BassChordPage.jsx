@@ -4,7 +4,7 @@ import { useLanguage } from '../hooks/useLanguage'
 import { useSEO } from '../hooks/useSEO'
 import { getBass4ChordBySlug, getBass5ChordBySlug } from '../data/bassChordData'
 import ChordDiagram from './ChordDiagram'
-import FingerLegend from './FingerLegend'
+import PalmGuide from './PalmGuide'
 
 const pillBtn = {
   background: 'transparent',
@@ -62,26 +62,31 @@ function VoicingPanel({ chord, stringNames, label }) {
   )
 }
 
-export default function BassChordPage() {
+export default function BassChordPage({ doubleBass = false }) {
   const navigate = useNavigate()
   const { chord: slug } = useParams()
   const { theme, toggleTheme } = useTheme()
   const { t } = useLanguage()
+  const libraryPath = doubleBass ? '/chords/double-bass' : '/chords/bass'
 
   const chord4 = getBass4ChordBySlug(slug || '')
   const chord5 = getBass5ChordBySlug(slug || '')
   const chord  = chord4 || chord5
 
   useSEO(chord ? {
-    title: `${chord.name} Bass Chord — How to Play ${chord.fullName} on Bass | TuneUp`,
-    description: `Free ${chord.name} bass chord diagrams for 4-string and 5-string bass guitar. Finger positions for ${chord.fullName} — no app needed.`,
-    url: `https://freetuner.app/chords/bass/${chord.name.toLowerCase()}`,
-  } : { title: 'Bass Chord Not Found | TuneUp', description: '', url: '' })
+    title: doubleBass
+      ? `${chord.name} Double Bass Chord — How to Play ${chord.fullName} | TuneUp`
+      : `${chord.name} Bass Chord — How to Play ${chord.fullName} on Bass | TuneUp`,
+    description: doubleBass
+      ? `Free ${chord.name} double bass chord diagram with finger positions. ${chord.fullName} on double bass tuning E A D G.`
+      : `Free ${chord.name} bass chord diagrams for 4-string and 5-string bass guitar. Finger positions for ${chord.fullName} — no app needed.`,
+    url: `https://freetuner.app${libraryPath}/${chord.name.toLowerCase()}`,
+  } : { title: doubleBass ? 'Double Bass Chord Not Found | TuneUp' : 'Bass Chord Not Found | TuneUp', description: '', url: '' })
 
   if (!chord) {
     return (
       <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <button onClick={() => navigate('/chords/bass')} style={pillBtn}>← All Bass Chords</button>
+        <button onClick={() => navigate(libraryPath)} style={pillBtn}>{t?.chordBackToLibrary || '← All Chords'}</button>
       </div>
     )
   }
@@ -112,7 +117,7 @@ export default function BassChordPage() {
           {chord.name}
         </h1>
         <p style={{ color: 'var(--muted2)', fontSize: '.85rem', marginBottom: '2.5rem' }}>
-          {chord.fullName} — {t?.chordHowToPlay || 'How to play'}
+          {chord.fullName} — {t?.chordHowToPlay || 'How to play'}{doubleBass ? ' · Double Bass' : ''}
         </p>
 
         {/* Side-by-side voicings */}
@@ -130,15 +135,28 @@ export default function BassChordPage() {
           {t?.fingerGuide || 'Finger Guide'}
         </h2>
         <div style={{ marginBottom: '2.5rem' }}>
-          <FingerLegend />
+          <PalmGuide />
+          {doubleBass && (
+            <p style={{
+              margin: '1.1rem auto 0',
+              maxWidth: '34rem',
+              textAlign: 'left',
+              fontFamily: "'Space Mono', monospace",
+              fontSize: '.72rem',
+              lineHeight: 1.6,
+              color: 'var(--text)',
+            }}>
+              {t?.doubleBassFingerNote || '* On the double bass, lower positions usually use fingers 1, 2 and 4. Finger 2 is not a normal stop. Higher up, the thumb stops the string, as on the cello in thumb position. That grip is in the lesson, not on this chart.'}
+            </p>
+          )}
         </div>
 
         <div style={{ display: 'flex', gap: '.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <button onClick={() => navigate('/chords/bass')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
-            ← All Bass Chords
+          <button onClick={() => navigate(libraryPath)} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
+            {t?.chordBackToLibrary || '← All Chords'}
           </button>
-          <button onClick={() => navigate('/bass')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
-            {t?.chordBackToTuner || '← Bass Tuner'}
+          <button onClick={() => navigate('/')} style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}>
+            {t?.navMain || '← Main page'}
           </button>
         </div>
       </main>

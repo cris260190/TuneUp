@@ -39,6 +39,11 @@ import MandolinChordPage from './components/MandolinChordPage'
 import MandolinFretboardPage from './components/MandolinFretboardPage'
 import BanjoChordLibraryPage from './components/BanjoChordLibraryPage'
 import BanjoChordPage from './components/BanjoChordPage'
+import FluteFingeringChart from './components/FluteFingeringChart'
+import WindFingeringChart from './components/WindFingeringChart'
+import WindChordPage from './components/WindChordPage'
+import PianoChordPage from './components/PianoChordPage'
+import { WIND_FINGERING, FINGERING_ROUTES, CHORD_ROUTES } from './data/windFingeringConfig'
 import ViolinChordLibraryPage from './components/ViolinChordLibraryPage'
 import ViolinChordPage from './components/ViolinChordPage'
 import ViolinFretboardPage from './components/ViolinFretboardPage'
@@ -123,13 +128,20 @@ function TunerPage() {
           onViewChords={
             activeCat === 'guitar' ? () => navigate('/chords/guitar') :
             activeCat === 'bass'   ? () => navigate('/chords/bass')   :
-            (activeCat === 'strings' && activeSub === 'Ukulele')   ? () => navigate('/chords/ukulele')   :
-            (activeCat === 'strings' && activeSub === 'Mandolin')    ? () => navigate('/chords/mandolin')    :
-            (activeCat === 'strings' && activeSub === 'Banjo 5-str') ? () => navigate('/chords/banjo')        :
-            (activeCat === 'strings' && activeSub === 'Double Bass') ? () => navigate('/chords/bass')         :
-            (activeCat === 'strings' && activeSub === 'Cello')       ? () => navigate('/chords/cello')        :
-            (activeCat === 'strings' && activeSub === 'Viola')       ? () => navigate('/chords/viola')        :
-            (activeCat === 'strings' && activeSub === 'Violin')      ? () => navigate('/chords/violin')       : null
+            (activeCat === 'strings' && activeSub === 'Ukulele')     ? () => navigate('/chords/ukulele')   :
+            (activeCat === 'strings' && activeSub === 'Mandolin')    ? () => navigate('/chords/mandolin')  :
+            (activeCat === 'strings' && activeSub === 'Banjo 5-str') ? () => navigate('/chords/banjo')     :
+            (activeCat === 'strings' && activeSub === 'Double Bass') ? () => navigate('/chords/double-bass') :
+            (activeCat === 'strings' && activeSub === 'Cello')       ? () => navigate('/chords/cello')     :
+            (activeCat === 'strings' && activeSub === 'Viola')       ? () => navigate('/chords/viola')     :
+            (activeCat === 'strings' && activeSub === 'Violin')      ? () => navigate('/chords/violin')    :
+            (activeCat === 'wind' && CHORD_ROUTES[activeSub])        ? () => navigate(CHORD_ROUTES[activeSub]) :
+            (activeCat === 'percussion' && activeSub === 'Piano')    ? () => navigate('/chords/piano') : null
+          }
+          onViewFingering={
+            (activeCat === 'wind' && FINGERING_ROUTES[activeSub])
+              ? () => navigate(FINGERING_ROUTES[activeSub])
+              : null
           }
           t={t}
         />
@@ -196,6 +208,27 @@ export default function App() {
       <Route path="/pitch-pipe" element={<PitchPipePage />} />
       <Route path="/metronome" element={<MetronomePage />} />
       <Route path="/transpose" element={<TransposePage />} />
+      <Route path="/flute-fingering" element={<FluteFingeringChart />} />
+      <Route path="/clarinet-fingering" element={<WindFingeringChart config={WIND_FINGERING.Clarinet} />} />
+      <Route path="/oboe-fingering" element={<WindFingeringChart config={WIND_FINGERING.Oboe} />} />
+      <Route path="/saxophone-fingering" element={<WindFingeringChart config={WIND_FINGERING.Saxophone} />} />
+      <Route path="/recorder-fingering" element={<WindFingeringChart config={WIND_FINGERING.Recorder} />} />
+      <Route path="/trumpet-fingering" element={<WindFingeringChart config={WIND_FINGERING.Trumpet} />} />
+      <Route path="/french-horn-fingering" element={<WindFingeringChart config={WIND_FINGERING['French Horn']} />} />
+      <Route path="/trombone-fingering" element={<WindFingeringChart config={WIND_FINGERING.Trombone} />} />
+      <Route path="/tuba-fingering" element={<WindFingeringChart config={WIND_FINGERING.Tuba} />} />
+      <Route path="/harmonica-fingering" element={<WindFingeringChart config={WIND_FINGERING.Harmonica} />} />
+      <Route path="/chords/flute" element={<WindChordPage instrument="Flute" />} />
+      <Route path="/chords/clarinet" element={<WindChordPage instrument="Clarinet" />} />
+      <Route path="/chords/oboe" element={<WindChordPage instrument="Oboe" />} />
+      <Route path="/chords/saxophone" element={<WindChordPage instrument="Saxophone" />} />
+      <Route path="/chords/recorder" element={<WindChordPage instrument="Recorder" />} />
+      <Route path="/chords/trumpet" element={<WindChordPage instrument="Trumpet" />} />
+      <Route path="/chords/french-horn" element={<WindChordPage instrument="French Horn" />} />
+      <Route path="/chords/trombone" element={<WindChordPage instrument="Trombone" />} />
+      <Route path="/chords/tuba" element={<WindChordPage instrument="Tuba" />} />
+      <Route path="/chords/harmonica" element={<WindChordPage instrument="Harmonica" />} />
+      <Route path="/chords/piano" element={<PianoChordPage />} />
       <Route path="/chords/violin/fretboard" element={<ViolinFretboardPage />} />
       <Route path="/chords/violin/:chord" element={<ViolinChordPage />} />
       <Route path="/chords/violin" element={<ViolinChordLibraryPage />} />
@@ -216,6 +249,8 @@ export default function App() {
       <Route path="/chords/bass/fretboard" element={<BassFretboardPage />} />
       <Route path="/chords/bass/:chord" element={<BassChordPage />} />
       <Route path="/chords/bass" element={<BassChordLibraryPage />} />
+      <Route path="/chords/double-bass/:chord" element={<BassChordPage doubleBass />} />
+      <Route path="/chords/double-bass" element={<BassChordLibraryPage doubleBass />} />
       <Route path="/progressions" element={<ProgressionsPage />} />
       <Route path="/chords/guitar/fretboard" element={<FretboardPage />} />
       <Route path="/chords/guitar/:chord" element={<ChordPage />} />

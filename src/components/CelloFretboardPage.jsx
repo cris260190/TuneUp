@@ -111,13 +111,13 @@ export default function CelloFretboardPage() {
             onClick={() => navigate('/chords/cello')}
             style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}
           >
-            ← Cello Chord Library
+            {t?.chordBackToLibrary || '← All Chords'}
           </button>
           <button
-            onClick={() => navigate('/strings/Cello')}
+            onClick={() => navigate('/')}
             style={{ ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem' }}
           >
-            {t?.chordBackToTuner || '← Cello Tuner'}
+            {t?.navMain || '← Main page'}
           </button>
         </div>
       </main>

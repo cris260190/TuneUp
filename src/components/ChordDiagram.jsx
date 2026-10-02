@@ -1,3 +1,5 @@
+import { FINGER_COLORS, FINGER_INK } from './fingerColors'
+
 const NUM_FRETS = 4
 const STRING_GAP = 18
 const FRET_GAP = 24
@@ -81,8 +83,8 @@ export default function ChordDiagram({ chord, size = 140, numStrings = 6 }) {
           width={stringX(barre.toString) - stringX(barre.fromString) + 12}
           height="12"
           rx="6"
-          fill="var(--gold)"
-          opacity="0.85"
+          fill={FINGER_COLORS[1]}
+          opacity="0.9"
           className="chordDot"
           style={{ animationDelay: '0ms' }}
         />
@@ -122,21 +124,23 @@ export default function ChordDiagram({ chord, size = 140, numStrings = 6 }) {
         if (f <= 0) return null
         if (barre && f === barre.fret && i > barre.fromString && i < barre.toString) return null
         const cy = fretY(f - 1) + FRET_GAP / 2
+        const finger = fingers[i]
+        const fill = FINGER_COLORS[finger] || 'var(--gold)'
         return (
           <g key={`dot-${i}`}>
             <circle
               cx={stringX(i)} cy={cy} r="7.5"
-              fill="var(--gold)"
+              fill={fill}
               className="chordDot"
               style={{ animationDelay: `${i * 80}ms` }}
             />
-            {fingers[i] > 0 && (
+            {finger > 0 && (
               <text
                 x={stringX(i)} y={cy + 3.5}
                 textAnchor="middle" fontSize="9" fontWeight="700"
-                fill="var(--bg)"
+                fill={FINGER_INK}
               >
-                {fingers[i]}
+                {finger}
               </text>
             )}
           </g>

@@ -185,10 +185,10 @@ export default function MandolinChordLibraryPage() {
           </div>
         )}
 
-        <button onClick={() => navigate('/strings/Mandolin')} style={{
+        <button onClick={() => navigate('/')} style={{
           ...pillBtn, fontSize: '1rem', padding: '0.5rem 1.4rem', marginTop: '3rem',
         }}>
-          {t?.chordBackToTuner || '← Mandolin Tuner'}
+          {t?.navMain || '← Main page'}
         </button>
       </main>
     </div>
