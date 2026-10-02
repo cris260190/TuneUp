@@ -196,17 +196,6 @@ export default function SidePanel({
           })}
         </div>
       </div>
-
-      {/* Ad slot */}
-      <div style={{
-        marginTop: 'auto', padding: '1.25rem',
-        border: '1px dashed var(--border)', borderRadius: '8px',
-        textAlign: 'center', color: 'var(--muted)',
-        fontSize: '.55rem', letterSpacing: '.15em',
-        textTransform: 'uppercase', background: 'rgba(30,30,48,.3)'
-      }}>
-        Advertisement · Google AdSense
-      </div>
     </div>
   )
 }
